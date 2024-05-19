@@ -21,3 +21,6 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+src/main/resources/interview-400010-8b8c33d4a88d.json
+src/main/resources/application.properties
