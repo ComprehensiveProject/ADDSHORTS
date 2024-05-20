@@ -79,7 +79,7 @@ export default function Navigation() {
                         sx={{ mr: 29 }}
                     >
                         <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-                            <img alt="mainLogo" src="../../assets/images/mainLogo.png" height='60' style={{margin: '0px 10px 0px 0px'}}/>
+                            <img alt="mainLogo" src="/assets/images/mainLogo.png" height='60' style={{margin: '0px 10px 0px 0px'}}/>
                         </Link>
                     </IconButton>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
