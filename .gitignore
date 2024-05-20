@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+src/main/resources/interview-400010-8b8c33d4a88d.json
+src/main/resources/application.properties
