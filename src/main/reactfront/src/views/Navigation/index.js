@@ -42,7 +42,6 @@ const Navigation = () => {
         };
     }, []);
 
-
     const logOutHandler = () => {
         setCookies('token', '', {expires: new Date()});
         removeUser();
@@ -52,7 +51,6 @@ const Navigation = () => {
     const handleProfileClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
-
     useEffect(() => {
         if (cookies.token) {
             axios.get('/api/auth/currentUser', {
@@ -80,7 +78,6 @@ const Navigation = () => {
             setUserProfile(user.userProfile || "path-to-default-image.jpg");
         }
     }, [user]);
-
 
     return (
         <div className='App'>
