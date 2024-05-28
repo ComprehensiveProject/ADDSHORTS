@@ -11,6 +11,11 @@ import MemberChange from "./views/MemberChange";
 import VideoSummary from "./views/VideoSummary";
 import LoadingScreen from "./components/LoadingScreen";
 import VideoPreview from "./components/VideoPreview";
+import VideoShort from "./views/VideoShort";
+import ShortsLoadingScreen from "./components/ShortsLoadingScreen";
+import ShortsTopicSelection from "./components/ShortsTopicSelection";
+import ShortsProcessingScreen from "./components/ShortsProcessing";
+import ShortsVideoPreview from "./components/ShortsVideoPreview";
 
 const App = () => {
     return (
@@ -26,6 +31,11 @@ const App = () => {
                     <Route path='/summary' element={<VideoSummary/>} />
                     <Route path="/loading" element={<LoadingScreen />} />
                     <Route path="/preview" element={<VideoPreview />} />
+                    <Route path='/shorts' element={<VideoShort/>} />
+                    <Route path="/shortsLoading" element={<ShortsLoadingScreen />} />
+                    <Route path="/shortsPreview" element={<ShortsVideoPreview />} />
+                    <Route path="/shortsProcessing" element={<ShortsProcessingScreen />} />
+                    <Route path="/shortsTopicSelection" element={<ShortsTopicSelection />} />
                 </Routes>
             </div>
         </Router>
