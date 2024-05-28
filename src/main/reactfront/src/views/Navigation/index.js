@@ -5,17 +5,8 @@ import logo from './images/logo.png'
 import Dropdown from 'react-bootstrap/Dropdown';
 import './Navigation.css'
 import {Link, useNavigate} from 'react-router-dom';
-
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
 import {useUserStore} from "../../stores";
 import {useCookies} from "react-cookie";
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import Avatar from '@mui/material/Avatar';
 import axios from "axios";
 
@@ -101,7 +92,7 @@ const Navigation = () => {
                 <Navbar.Collapse className="justify-content-center abcd">
                     <Nav>
                         <Nav.Link href="/main" className="custom-nav-link" >Home</Nav.Link>
-                        <Nav.Link href="/remove" className="custom-nav-link">영상 요약</Nav.Link>
+                        <Nav.Link href="/summary" className="custom-nav-link">영상 요약</Nav.Link>
                         <Nav.Link href="/shorts" className="custom-nav-link">쇼츠 제작</Nav.Link>
                         <Nav.Link href="/community" className="custom-nav-link">커뮤니티</Nav.Link>
                         <Nav.Link href="/developer" className="custom-nav-link">개발팀</Nav.Link>
@@ -120,7 +111,7 @@ const Navigation = () => {
                                     />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
-                                    <Dropdown.Item href="/mypage">정보수정</Dropdown.Item>
+                                    <Dropdown.Item href="/memberInfo">정보수정</Dropdown.Item>
                                     <Dropdown.Item onClick={logOutHandler}>로그아웃</Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>

@@ -7,6 +7,10 @@ import SignUp from "./views/SignUp";
 import HeroLeft09 from "./Start/HeroLeft09";
 import MainHome from "./views/MainHome";
 import Developer from "./views/Developer";
+import MemberChange from "./views/MemberChange";
+import VideoSummary from "./views/VideoSummary";
+import LoadingScreen from "./components/LoadingScreen";
+import VideoPreview from "./components/VideoPreview";
 
 const App = () => {
     return (
@@ -18,7 +22,10 @@ const App = () => {
                     <Route path="/signin" element={<SignIn />} />
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="/developer" element={<Developer />} />
-
+                    <Route path='/memberInfo' element={<MemberChange/>} />
+                    <Route path='/summary' element={<VideoSummary/>} />
+                    <Route path="/loading" element={<LoadingScreen />} />
+                    <Route path="/preview" element={<VideoPreview />} />
                 </Routes>
             </div>
         </Router>

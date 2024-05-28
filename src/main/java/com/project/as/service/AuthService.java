@@ -113,8 +113,6 @@ public class AuthService {
             currentUser.setUserName(updatedInfo.getUserName());
             currentUser.setUserPhone(updatedInfo.getUserPhone());
             currentUser.setUserProfile(updatedInfo.getUserProfile());
-            currentUser.setUserName(updatedInfo.getUserName());
-
 
             // 데이터베이스에 저장
             userRepository.save(currentUser);
