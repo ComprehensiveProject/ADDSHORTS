@@ -1,0 +1,25 @@
+/*.im {*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*}*/
+
+.ei {
+    width: 100%;
+    max-width: 400px;
+    margin: 10px 30px;
+}
+
+/* 태블릿 화면 크기에 대한 미디어 쿼리 */
+@media (max-width: 768px) {
+    .ei {
+        margin: 10px 50px; /* 태블릿 화면에서 좌우 마진 감소 */
+    }
+}
+
+/* 모바일 화면 크기에 대한 미디어 쿼리 */
+@media (max-width: 480px) {
+    .ei {
+        margin: 10px 20px; /* 모바일 화면에서 좌우 마진 더 감소 */
+    }
+}
