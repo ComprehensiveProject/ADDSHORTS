@@ -86,10 +86,10 @@ public class AuthController {
     }
 
     @PostMapping("/updateUserInfo")
-    public ResponseDto<?> updateUserInfo(@RequestBody UserInfoEntity updatedInfo, @RequestHeader String Authorization) {
+    public ResponseDto<?> updateUserInfo(@RequestBody UserInfoEntity updatedInfo, @RequestHeader("Authorization") String Authorization) {
         String token = Authorization.split(" ")[1];
-        String userEmail = tokenProvider.getIdFromToken(token);
-        return authService.updateUserInfo(userEmail, updatedInfo);
+        String userId = tokenProvider.getIdFromToken(token);
+        return authService.updateUserInfo(userId, updatedInfo);
     }
 
     @GetMapping("/currentUserName")
@@ -106,6 +106,5 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
     }
-
 
 }
