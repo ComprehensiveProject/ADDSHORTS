@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/board/{boardId}")
+@RequestMapping("/board/{boardNumber}")
 public class BoardCommentController {
 
     @Autowired
@@ -22,8 +22,8 @@ public class BoardCommentController {
     private ModelMapper modelMapper;
 
     @GetMapping("/comments")
-    public ResponseEntity<List<BoardCommentDto>> getComments(@PathVariable int boardId) {
-        List<BoardCommentEntity> comments = commentService.findCommentsByBoardId(boardId);
+    public ResponseEntity<List<BoardCommentDto>> getComments(@PathVariable("boardNumber") int boardNumber) {
+        List<BoardCommentEntity> comments = commentService.findCommentsByBoardNumber(boardNumber);
         List<BoardCommentDto> commentDtos = comments.stream()
                 .map(comment -> modelMapper.map(comment, BoardCommentDto.class))
                 .collect(Collectors.toList());
@@ -31,9 +31,9 @@ public class BoardCommentController {
     }
 
     @PostMapping("/comments")
-    public ResponseEntity<BoardCommentDto> addComment(@PathVariable int boardId, @RequestBody BoardCommentDto commentDto) {
+    public ResponseEntity<BoardCommentDto> addComment(@PathVariable("boardNumber") int boardNumber, @RequestBody BoardCommentDto commentDto) {
+        commentDto.setBoardNumber(boardNumber);
         BoardCommentEntity comment = modelMapper.map(commentDto, BoardCommentEntity.class);
-        comment.setBoardNumber(boardId);
         BoardCommentEntity savedComment = commentService.save(comment);
         BoardCommentDto savedCommentDto = modelMapper.map(savedComment, BoardCommentDto.class);
         return ResponseEntity.ok(savedCommentDto);

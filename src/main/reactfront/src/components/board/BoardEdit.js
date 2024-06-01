@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import {Button, TextField, Container, Typography, Box, Paper} from '@mui/material';
+import Navigation from "../../views/Navigation";
 
 const BoardEdit = () => {
     const [board, setBoard] = useState({ boardTitle: '', boardContent: '' });
@@ -79,52 +80,55 @@ const BoardEdit = () => {
     };
 
     return (
-        <div style={{ paddingTop: '150px' }}>
-            <Container maxWidth="md">
-                <Paper elevation={3} style={{ padding: '20px', borderRadius: '8px' }}>
-                    <Typography variant="h4" gutterBottom align="center">
-                        게시물 수정하기
-                    </Typography>
+        <div>
+            <Navigation/>
+            <div style={{ paddingTop: '150px' }}>
+                <Container maxWidth="md">
+                    <Paper elevation={3} style={{ padding: '20px', borderRadius: '8px' }}>
+                        <Typography variant="h4" gutterBottom align="center">
+                            게시물 수정하기
+                        </Typography>
 
-                    <TextField
-                        fullWidth
-                        label="제목"
-                        name="boardTitle"
-                        variant="outlined"
-                        value={board.boardTitle}
-                        onChange={handleInputChange}
-                        style={{ marginBottom: '20px' }}
-                    />
+                        <TextField
+                            fullWidth
+                            label="제목"
+                            name="boardTitle"
+                            variant="outlined"
+                            value={board.boardTitle}
+                            onChange={handleInputChange}
+                            style={{ marginBottom: '20px' }}
+                        />
 
-                    <TextField
-                        fullWidth
-                        label="내용"
-                        name="boardContent"
-                        variant="outlined"
-                        multiline
-                        rows={4}
-                        value={board.boardContent}
-                        onChange={handleInputChange}
-                    />
+                        <TextField
+                            fullWidth
+                            label="내용"
+                            name="boardContent"
+                            variant="outlined"
+                            multiline
+                            rows={4}
+                            value={board.boardContent}
+                            onChange={handleInputChange}
+                        />
 
-                    <Box mt={2}>
-                        {imagePreview && <img src={imagePreview} alt="Post Preview" style={{ width: '100%', maxHeight: 300, marginBottom: '20px', borderRadius: 0 }} />}
-                        {videoPreview && <img src={videoPreview} alt="Post Preview" style={{ width: '100%', maxHeight: 300, marginBottom: '20px', borderRadius: 0 }} />}
-                        <input accept="image/*" style={{ display: 'none' }} id="board-image-input" type="file" onChange={handleImageChange} />
-                        <input accept="video/*" style={{ display: 'none' }} id="board-video-input" type="file" onChange={handleVideoChange} />
-                        <label htmlFor="board-image-input">
-                            <Button variant="contained" component="span">사진 변경</Button>
-                        </label>
-                        <label htmlFor="board-video-input">
-                            <Button variant="contained" component="span" style={{ marginLeft: '10px' }}>비디오 변경</Button>
-                        </label>
-                    </Box>
+                        <Box mt={2}>
+                            {imagePreview && <img src={imagePreview} alt="Post Preview" style={{ width: '100%', maxHeight: 300, marginBottom: '20px', borderRadius: 0 }} />}
+                            {videoPreview && <img src={videoPreview} alt="Post Preview" style={{ width: '100%', maxHeight: 300, marginBottom: '20px', borderRadius: 0 }} />}
+                            <input accept="image/*" style={{ display: 'none' }} id="board-image-input" type="file" onChange={handleImageChange} />
+                            <input accept="video/*" style={{ display: 'none' }} id="board-video-input" type="file" onChange={handleVideoChange} />
+                            <label htmlFor="board-image-input">
+                                <Button variant="contained" component="span">사진 변경</Button>
+                            </label>
+                            <label htmlFor="board-video-input">
+                                <Button variant="contained" component="span" style={{ marginLeft: '10px' }}>비디오 변경</Button>
+                            </label>
+                        </Box>
 
-                    <Button variant="contained" color="primary" onClick={handleUpdate} style={{ marginTop: '20px' }}>
-                        수정하기
-                    </Button>
-                </Paper>
-            </Container>
+                        <Button variant="contained" color="primary" onClick={handleUpdate} style={{ marginTop: '20px' }}>
+                            수정하기
+                        </Button>
+                    </Paper>
+                </Container>
+            </div>
         </div>
     );
 }

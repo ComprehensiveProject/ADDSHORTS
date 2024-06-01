@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import {Container, Typography, Divider, Box, Button, TextField, Grid} from '@mui/material';
 import { useCookies } from "react-cookie";
 import Avatar from "@mui/material/Avatar";
+import Navigation from "../../views/Navigation";
 
 const BoardDetail = () => {
     const [boardDetail, setBoardDetail] = useState({});
@@ -77,11 +78,14 @@ const BoardDetail = () => {
     // 댓글을 서버에 전송하는 함수
     const handlePostComment = async () => {
         try {
+
             const commentData = {
                 boardNumber: boardId,
-                CommentWriterId: currentUser.userId,
+                commentWriterId: currentUser.userId,
                 commentContent: comment
             };
+
+            console.log(commentData)
 
             const response = await axios.post(`/board/${boardId}/comments`, commentData);
             setComments([...comments, response.data]);
@@ -93,113 +97,117 @@ const BoardDetail = () => {
 
 
     return (
-        <div style={{ paddingTop: '150px' }}>
-            <Container
-                maxWidth="md"
-                style={{
-                    border: '1px solid #e0e0e0',
-                    borderRadius: '15px',
-                    padding: '20px',
-                    boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.1)',
-                    backgroundColor: 'white',
-                    paddingBottom: '40px'
-                }}
-            >
-                <Box mb={4}>
-                    <Typography variant="h4" gutterBottom>
-                        {boardDetail.boardTitle}
-                    </Typography>
-                    <Divider />
-                    <Box my={2} display="flex" flexDirection="column" alignItems="start">
-                        <Typography variant="subtitle1" color="textSecondary">
-                            작성자: {boardDetail.boardWriterId}
+        <div>
+            <Navigation/>
+            <div style={{ paddingTop: '150px' }}>
+                <Container
+                    maxWidth="md"
+                    style={{
+                        border: '1px solid #e0e0e0',
+                        borderRadius: '15px',
+                        padding: '20px',
+                        boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.1)',
+                        backgroundColor: 'white',
+                        paddingBottom: '40px'
+                    }}
+                >
+                    <Box mb={4}>
+                        <Typography variant="h4" gutterBottom>
+                            {boardDetail.boardTitle}
                         </Typography>
-                        <Typography variant="subtitle1" color="textSecondary">
-                            작성 날짜: {boardDetail.boardWriteDate}
-                        </Typography>
-                    </Box>
-                    <Box mt={5} mb={5}>
-                        <Typography variant="body1">
-                            {boardDetail.boardContent}
-                        </Typography>
-                    </Box>
-                    {boardDetail.boardImage && (
-                        <Box my={4}>
-                            <img
-                                src={boardDetail.boardImage}
-                                alt="Board Image"
-                                style={{ width: '100%', maxHeight: 500, objectFit: 'cover', borderRadius: '10px' }}
-                            />
+                        <Divider />
+                        <Box my={2} display="flex" flexDirection="column" alignItems="start">
+                            <Typography variant="subtitle1" color="textSecondary">
+                                작성자: {boardDetail.boardWriterId}
+                            </Typography>
+                            <Typography variant="subtitle1" color="textSecondary">
+                                작성 날짜: {boardDetail.boardWriteDate}
+                            </Typography>
                         </Box>
-                    )}
-                    {boardDetail.boardVideo && (
-                        <Box my={4}>
-                            <video
-                                src={boardDetail.boardVideo}
-                                alt="Board Video"
-                                style={{ width: '100%', maxHeight: 500, objectFit: 'cover', borderRadius: '10px' }}
-                            />
+                        <Box mt={5} mb={5}>
+                            <Typography variant="body1">
+                                {boardDetail.boardContent}
+                            </Typography>
                         </Box>
-                    )}
-
-                    <Box mt={5} display="flex" justifyContent="flex-end">
-                        {currentUser.userId === boardDetail.boardWriterId && (
-                            <>
-                                <Button variant="contained" color="primary" style={{ marginRight: '10px' }} onClick={handleEdit}>
-                                    수정
-                                </Button>
-                                <Button variant="contained" color="secondary" style={{ marginRight: '10px' }} onClick={handleDelete}>
-                                    삭제
-                                </Button>
-                            </>
-                        )}
-                        <Button variant="outlined" onClick={handleGoToBoardList}>
-                            목록
-                        </Button>
-                    </Box>
-                </Box>
-
-                <Divider style={{ marginTop: '20px', marginBottom: '20px' }} />
-
-                <Box mt={5}>
-                    <Typography variant="h5" style={{ marginBottom: '15px' }}>
-                        댓글 ({comments.length})
-                    </Typography>
-                    <Box>
-                        {comments.map((comment, index) => (
-                            <Box key={index} style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                <Typography variant="subtitle1" style={{ marginRight: '15px' }}>
-                                    {comment.commentUserId}
-                                </Typography>
-                                <Typography variant="body2">
-                                    {comment.commentContent}
-                                </Typography>
-                                <Box style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
-                                    <Typography variant="caption" color="textSecondary" style={{ marginLeft: '15px' }}>
-                                        {new Date(comment.commentWriteDate).toLocaleString()}
-                                    </Typography>
-                                </Box>
+                        {boardDetail.boardImage && (
+                            <Box my={4}>
+                                <img
+                                    src={boardDetail.boardImage}
+                                    alt="Board Image"
+                                    style={{ width: '100%', maxHeight: 500, objectFit: 'cover', borderRadius: '10px' }}
+                                />
                             </Box>
-                        ))}
-                    </Box>
-                    <Grid container spacing={2} mt={3} alignItems="center">
-                        <Grid item xs={10}>
-                            <TextField
-                                fullWidth
-                                label="댓글 작성"
-                                variant="outlined"
-                                value={comment}
-                                onChange={e => setComment(e.target.value)}
-                            />
-                        </Grid>
-                        <Grid item xs={2}>
-                            <Button variant="contained" onClick={handlePostComment}>
-                                댓글 등록
+                        )}
+                        {boardDetail.boardVideo && (
+                            <Box my={4}>
+                                <video
+                                    src={boardDetail.boardVideo}
+                                    alt="Board Video"
+                                    style={{ width: '100%', maxHeight: 500, objectFit: 'cover', borderRadius: '10px' }}
+                                    controls
+                                />
+                            </Box>
+                        )}
+
+                        <Box mt={5} display="flex" justifyContent="flex-end">
+                            {currentUser.userId === boardDetail.boardWriterId && (
+                                <>
+                                    <Button variant="contained" color="primary" style={{ marginRight: '10px' }} onClick={handleEdit}>
+                                        수정
+                                    </Button>
+                                    <Button variant="contained" color="secondary" style={{ marginRight: '10px' }} onClick={handleDelete}>
+                                        삭제
+                                    </Button>
+                                </>
+                            )}
+                            <Button variant="outlined" onClick={handleGoToBoardList}>
+                                목록
                             </Button>
+                        </Box>
+                    </Box>
+
+                    <Divider style={{ marginTop: '20px', marginBottom: '20px' }} />
+
+                    <Box mt={5}>
+                        <Typography variant="h5" style={{ marginBottom: '15px' }}>
+                            댓글 ({comments.length})
+                        </Typography>
+                        <Box>
+                            {comments.map((comment, index) => (
+                                <Box key={index} style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                    <Typography variant="subtitle1" style={{ marginRight: '15px' }}>
+                                        {comment.commentWriterId}
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        {comment.commentContent}
+                                    </Typography>
+                                    <Box style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
+                                        <Typography variant="caption" color="textSecondary" style={{ marginLeft: '15px' }}>
+                                            {new Date(comment.commentWriteDate).toLocaleString()}
+                                        </Typography>
+                                    </Box>
+                                </Box>
+                            ))}
+                        </Box>
+                        <Grid container spacing={2} mt={3} alignItems="center">
+                            <Grid item xs={10}>
+                                <TextField
+                                    fullWidth
+                                    label="댓글 작성"
+                                    variant="outlined"
+                                    value={comment}
+                                    onChange={e => setComment(e.target.value)}
+                                />
+                            </Grid>
+                            <Grid item xs={2}>
+                                <Button variant="contained" onClick={handlePostComment}>
+                                    댓글 등록
+                                </Button>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </Box>
-            </Container>
+                    </Box>
+                </Container>
+            </div>
         </div>
     );
 }

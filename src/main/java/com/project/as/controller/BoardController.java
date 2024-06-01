@@ -30,9 +30,9 @@ public class BoardController {
         return ResponseEntity.ok(boardService.getAllBoards());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<BoardEntity> getBoardById(@PathVariable int id) {
-        return boardService.getBoardById(id)
+    @GetMapping("/{boardNumber}")
+    public ResponseEntity<BoardEntity> getBoardById(@PathVariable("boardNumber") int boardNumber) {
+        return boardService.getBoardByBoardNumber(boardNumber)
                 .map(board -> ResponseEntity.ok(board))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -42,12 +42,12 @@ public class BoardController {
         return ResponseEntity.ok(boardService.saveBoard(board));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<BoardEntity> updateBoard(@PathVariable int id,
+    @PutMapping("/{boardNumber}")
+    public ResponseEntity<BoardEntity> updateBoard(@PathVariable("boardNumber") int boardNumber,
                                                    @RequestPart("boardTitle") String boardTitle,
                                                    @RequestPart("boardContent") String boardContent,
                                                    @RequestPart(value = "boardImage", required = false) MultipartFile boardImage) {
-        BoardEntity existingBoard = boardService.getBoardById(id)
+        BoardEntity existingBoard = boardService.getBoardByBoardNumber(boardNumber)
                 .orElseThrow(() -> new RuntimeException("Board not found!"));
 
         try {
@@ -70,9 +70,9 @@ public class BoardController {
 
 
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBoard(@PathVariable int id) {
-        boardService.deleteBoard(id);
+    @DeleteMapping("/{boardNumber}")
+    public ResponseEntity<Void> deleteBoard(@PathVariable("boardNumber") int boardNumber) {
+        boardService.deleteBoard(boardNumber);
         return ResponseEntity.noContent().build();
     }
 
@@ -108,9 +108,9 @@ public class BoardController {
         }
     }
 
-    @PostMapping("/{id}/incrementView")
-    public ResponseEntity<Void> incrementViewCount(@PathVariable int id) {
-        boardService.incrementViewCount(id);
+    @PostMapping("/{boardNumber}/incrementView")
+    public ResponseEntity<Void> incrementViewCount(@PathVariable("boardNumber") int boardNumber) {
+        boardService.incrementViewCount(boardNumber);
         return ResponseEntity.ok().build();
     }
 

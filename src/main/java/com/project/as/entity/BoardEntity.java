@@ -29,4 +29,5 @@ public class BoardEntity {
     private int boardLikeCount;
     private int boardHateCount;
     private int boardCommentCount;
+
 }

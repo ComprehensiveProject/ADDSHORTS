@@ -21,16 +21,16 @@ public class BoardService {
         return boardRepository.findAll();
     }
 
-    public Optional<BoardEntity> getBoardById(int id) {
-        return boardRepository.findById(id);
+    public Optional<BoardEntity> getBoardByBoardNumber(int boardNumber) {
+        return boardRepository.findById(boardNumber);
     }
 
     public BoardEntity saveBoard(BoardEntity board) {
         return boardRepository.save(board);
     }
 
-    public void deleteBoard(int id) {
-        boardRepository.deleteById(id);
+    public void deleteBoard(int boardNumber) {
+        boardRepository.deleteByBoardNumber(boardNumber);
     }
 
     public void createPost(BoardDto boardDto) {
@@ -44,15 +44,11 @@ public class BoardService {
         boardRepository.save(board);
     }
 
-    public void incrementViewCount(int id) {
-        BoardEntity board = boardRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Board not found!"));
+    public void incrementViewCount(int boardNumber) {
+        BoardEntity board = boardRepository.findByBoardNumber(boardNumber);
         board.setBoardClickCount(board.getBoardClickCount() + 1);
         boardRepository.save(board);
     }
 
-    public Optional<BoardEntity> getBoardEntityById(int id) {
-        return boardRepository.findById(id);
-    }
 
 }

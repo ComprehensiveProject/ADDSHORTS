@@ -16,6 +16,10 @@ import ShortsLoadingScreen from "./components/ShortsLoadingScreen";
 import ShortsTopicSelection from "./components/ShortsTopicSelection";
 import ShortsProcessingScreen from "./components/ShortsProcessing";
 import ShortsVideoPreview from "./components/ShortsVideoPreview";
+import Board from "./views/Board";
+import BoardAdd from "./components/board/BoardAdd";
+import BoardDetail from "./components/board/BoardDetail";
+import BoardEdit from "./components/board/BoardEdit";
 
 const App = () => {
     return (
@@ -36,6 +40,10 @@ const App = () => {
                     <Route path="/shortsPreview" element={<ShortsVideoPreview />} />
                     <Route path="/shortsProcessing" element={<ShortsProcessingScreen />} />
                     <Route path="/shortsTopicSelection" element={<ShortsTopicSelection />} />
+                    <Route path="/board" element={<Board />} />
+                    <Route path='/boardAdd' element={<BoardAdd />} />
+                    <Route path="/boardDetail/:boardId" element={<BoardDetail />} />
+                    <Route path="/board/edit/:boardId" element={<BoardEdit/>}/>
                 </Routes>
             </div>
         </Router>

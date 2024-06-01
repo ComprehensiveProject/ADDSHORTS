@@ -3,6 +3,7 @@ import axios from 'axios';
 import {Box, Button, TextField, Typography, Avatar, Container, Paper} from '@mui/material';
 import { useCookies } from "react-cookie";
 import { useNavigate } from 'react-router-dom';
+import Navigation from "../../views/Navigation";
 
 const BoardAdd = () => {
     const [cookies] = useCookies(['token']);
@@ -105,66 +106,69 @@ const BoardAdd = () => {
     };
 
     return (
-        <div style={{ paddingTop: '150px' }}>
-            <Container style={{ maxWidth: '800px' }}>
-                <Paper elevation={3} style={{ padding: '20px', borderRadius: '8px' }}>
-                    <Typography variant="h5" gutterBottom align="center">
-                        글 작성
-                    </Typography>
-
-                    <Box display="flex" flexDirection="column" alignItems="center" marginBottom="20px">
-                        <Avatar src={user.userProfile} style={{ width: 60, height: 60 }} />
-                        <Typography variant="h6" gutterBottom>
-                            {user.userNickname}
+        <div>
+            <Navigation/>
+            <div style={{ paddingTop: '150px' }}>
+                <Container style={{ maxWidth: '800px' }}>
+                    <Paper elevation={3} style={{ padding: '20px', borderRadius: '8px' }}>
+                        <Typography variant="h5" gutterBottom align="center">
+                            글 작성
                         </Typography>
-                    </Box>
 
-                    <TextField  // 제목 입력 필드
-                        fullWidth
-                        label="제목"
-                        variant="outlined"
-                        value={postTitle}
-                        onChange={(e) => setPostTitle(e.target.value)}
-                        style={{ marginBottom: '20px' }}
-                    />
-
-                    <TextField
-                        fullWidth
-                        label="내용"
-                        variant="outlined"
-                        multiline
-                        rows={8}
-                        value={postContent}
-                        onChange={(e) => setPostContent(e.target.value)}
-                        style={{ marginBottom: '10px' }}
-                    />
-
-                    <Box mt={2} marginBottom="40px">
-                        {postImagePreview && <img src={postImagePreview} alt="Post Preview" style={{ width: '100%', maxHeight: 300, marginBottom: '10px' }} />}
-                        {postVideoPreview && <video src={postVideoPreview} controls style={{ width: '100%', maxHeight: 300, marginBottom: '10px' }} />}
-                        <input accept="image/*" style={{ display: 'none' }} id="post-icon-button-file" type="file" onChange={handlePostImageChange} />
-                        <input accept="video/*" style={{ display: 'none' }} id="post-video-button-file" type="file" onChange={handlePostVideoChange} />
-                        <label htmlFor="post-icon-button-file">
-                            <Button variant="contained" component="span">사진</Button>
-                        </label>
-                        <label htmlFor="post-video-button-file">
-                            <Button variant="contained" component="span" style={{ marginLeft: '10px' }}>비디오</Button>
-                        </label>
-                    </Box>
-
-                    {errorMessage && (
-                        <Box mt={2} marginBottom="20px">
-                            <Typography color="error">{errorMessage}</Typography>
+                        <Box display="flex" flexDirection="column" alignItems="center" marginBottom="20px">
+                            <Avatar src={user.userProfile} style={{ width: 60, height: 60 }} />
+                            <Typography variant="h6" gutterBottom>
+                                {user.userNickname}
+                            </Typography>
                         </Box>
-                    )}
 
-                    <Box mt={2}>
-                        <Button fullWidth variant="contained" color="primary" onClick={handleCreatePost} disabled={isLoading}>
-                            {isLoading ? '게시 중...' : '게시'}
-                        </Button>
-                    </Box>
-                </Paper>
-            </Container>
+                        <TextField  // 제목 입력 필드
+                            fullWidth
+                            label="제목"
+                            variant="outlined"
+                            value={postTitle}
+                            onChange={(e) => setPostTitle(e.target.value)}
+                            style={{ marginBottom: '20px' }}
+                        />
+
+                        <TextField
+                            fullWidth
+                            label="내용"
+                            variant="outlined"
+                            multiline
+                            rows={8}
+                            value={postContent}
+                            onChange={(e) => setPostContent(e.target.value)}
+                            style={{ marginBottom: '10px' }}
+                        />
+
+                        <Box mt={2} marginBottom="40px">
+                            {postImagePreview && <img src={postImagePreview} alt="Post Preview" style={{ width: '100%', maxHeight: 300, marginBottom: '10px' }} />}
+                            {postVideoPreview && <video src={postVideoPreview} controls style={{ width: '100%', maxHeight: 300, marginBottom: '10px' }} />}
+                            <input accept="image/*" style={{ display: 'none' }} id="post-icon-button-file" type="file" onChange={handlePostImageChange} />
+                            <input accept="video/*" style={{ display: 'none' }} id="post-video-button-file" type="file" onChange={handlePostVideoChange} />
+                            <label htmlFor="post-icon-button-file">
+                                <Button variant="contained" component="span">사진</Button>
+                            </label>
+                            <label htmlFor="post-video-button-file">
+                                <Button variant="contained" component="span" style={{ marginLeft: '10px' }}>비디오</Button>
+                            </label>
+                        </Box>
+
+                        {errorMessage && (
+                            <Box mt={2} marginBottom="20px">
+                                <Typography color="error">{errorMessage}</Typography>
+                            </Box>
+                        )}
+
+                        <Box mt={2}>
+                            <Button fullWidth variant="contained" color="primary" onClick={handleCreatePost} disabled={isLoading}>
+                                {isLoading ? '게시 중...' : '게시'}
+                            </Button>
+                        </Box>
+                    </Paper>
+                </Container>
+            </div>
         </div>
     );
 }

@@ -18,8 +18,8 @@ public class BoardCommentService {
     @Autowired
     private BoardCommentRepository commentRepository;
 
-    public List<BoardCommentEntity> findCommentsByBoardId(int boardId) {
-        return commentRepository.findByBoardNumber(boardId);
+    public List<BoardCommentEntity> findCommentsByBoardNumber(int boardNumber) {
+        return commentRepository.findByBoardNumber(boardNumber);
     }
 
     @Transactional
