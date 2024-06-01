@@ -91,7 +91,7 @@ const Navigation = () => {
                         <Nav.Link href="/main" className="custom-nav-link" >Home</Nav.Link>
                         <Nav.Link href="/summary" className="custom-nav-link">영상 요약</Nav.Link>
                         <Nav.Link href="/shorts" className="custom-nav-link">쇼츠 제작</Nav.Link>
-                        <Nav.Link href="/community" className="custom-nav-link">커뮤니티</Nav.Link>
+                        <Nav.Link href="/board" className="custom-nav-link">커뮤니티</Nav.Link>
                         <Nav.Link href="/developer" className="custom-nav-link">개발팀</Nav.Link>
                     </Nav>
 
