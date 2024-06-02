@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
-import {Button, TextField, Container, Typography, Box, Paper} from '@mui/material';
+import { Box, Button, TextField, Typography, Avatar, Container, Paper, IconButton } from '@mui/material';
+import { PhotoCamera, VideoCameraBack, Save } from '@mui/icons-material';
 import Navigation from "../../views/Navigation";
 
 const BoardEdit = () => {
@@ -73,19 +74,19 @@ const BoardEdit = () => {
 
             await axios.put(`/board/${boardId}`, formData);
             navigate(`/boardDetail/${boardId}`);
-            alert("수정이 완료되었습니다. ")
+            alert("수정이 완료되었습니다.");
         } catch (error) {
             console.error("Error updating board:", error);
         }
     };
 
     return (
-        <div>
-            <Navigation/>
-            <div style={{ paddingTop: '150px' }}>
-                <Container maxWidth="md">
-                    <Paper elevation={3} style={{ padding: '20px', borderRadius: '8px' }}>
-                        <Typography variant="h4" gutterBottom align="center">
+        <div style={{ backgroundColor: '#fafafa', minHeight: '100vh' }}>
+            <Navigation />
+            <div style={{ paddingTop: '150px', paddingBottom: '50px' }}>
+                <Container maxWidth="sm">
+                    <Paper elevation={3} style={{ padding: '30px', borderRadius: '15px' }}>
+                        <Typography variant="h5" gutterBottom align="center" style={{ marginBottom: '30px', fontWeight: 'bold' }}>
                             게시물 수정하기
                         </Typography>
 
@@ -105,25 +106,44 @@ const BoardEdit = () => {
                             name="boardContent"
                             variant="outlined"
                             multiline
-                            rows={4}
+                            rows={6}
                             value={board.boardContent}
                             onChange={handleInputChange}
+                            style={{ marginBottom: '20px' }}
                         />
 
-                        <Box mt={2}>
-                            {imagePreview && <img src={imagePreview} alt="Post Preview" style={{ width: '100%', maxHeight: 300, marginBottom: '20px', borderRadius: 0 }} />}
-                            {videoPreview && <img src={videoPreview} alt="Post Preview" style={{ width: '100%', maxHeight: 300, marginBottom: '20px', borderRadius: 0 }} />}
+                        <Box display="flex" justifyContent="space-between" marginBottom="20px">
+                            {imagePreview && (
+                                <img src={imagePreview} alt="Post Preview" style={{ width: '80%', maxHeight: '300px', objectFit: 'cover', borderRadius: '10px' }} />
+                            )}
+                            {videoPreview && (
+                                <video src={videoPreview} controls style={{ width: '80%', maxHeight: '300px', borderRadius: '10px' }} />
+                            )}
+                        </Box>
+
+                        <Box display="flex" justifyContent="center" marginBottom="30px">
                             <input accept="image/*" style={{ display: 'none' }} id="board-image-input" type="file" onChange={handleImageChange} />
-                            <input accept="video/*" style={{ display: 'none' }} id="board-video-input" type="file" onChange={handleVideoChange} />
                             <label htmlFor="board-image-input">
-                                <Button variant="contained" component="span">사진 변경</Button>
+                                <IconButton color="primary" component="span">
+                                    <PhotoCamera />
+                                </IconButton>
                             </label>
+                            <input accept="video/*" style={{ display: 'none' }} id="board-video-input" type="file" onChange={handleVideoChange} />
                             <label htmlFor="board-video-input">
-                                <Button variant="contained" component="span" style={{ marginLeft: '10px' }}>비디오 변경</Button>
+                                <IconButton color="primary" component="span">
+                                    <VideoCameraBack />
+                                </IconButton>
                             </label>
                         </Box>
 
-                        <Button variant="contained" color="primary" onClick={handleUpdate} style={{ marginTop: '20px' }}>
+                        <Button
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            onClick={handleUpdate}
+                            startIcon={<Save />}
+                            style={{ borderRadius: '10px', padding: '10px 0' }}
+                        >
                             수정하기
                         </Button>
                     </Paper>
