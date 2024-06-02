@@ -13,38 +13,36 @@ export default function ShortsLoadingScreen() {
     useEffect(() => {
         const uploadAndExtractTopics = async () => {
             try {
-                const formData = new FormData();
-                formData.append('video', fileData);
-                formData.append('userId', userId);
+                const formDataSave = new FormData();
+                formDataSave.append('video', fileData);
+                formDataSave.append('userId', userId);
 
-                // Upload original video
-                const uploadResponse = await axios.post('/api/videos/uploadOriginal', formData, {
+                const uploadResponse = await axios.post('/api/videos/uploadOriginal', formDataSave, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
                 });
 
                 if (uploadResponse.data.result) {
-                    const flaskFormData = new FormData();
-                    flaskFormData.append('file', fileData);
-                    // Upload
-                    const response = await axios.post('http://localhost:5000/upload', flaskFormData, {
+                    const formData = new FormData();
+                    formData.append('file', fileData);
+                    formData.append('userId', userId);
+
+                    const response = await axios.post('http://localhost:5000/upload', formData, {
                         headers: {
                             'Content-Type': 'multipart/form-data'
                         }
                     });
 
                     if (response.status === 200) {
-                        const { topics } = response.data; // 서버 응답에서 topics 추출
+                        const { topics } = response.data;
                         navigate('/shortsTopicSelection', { state: { topics, fileData, userId } });
                     } else {
                         alert('Failed to extract topics.');
                         navigate('/shorts');
                     }
-                } else {
-                    alert('Failed to upload original video.');
-                    navigate('/shorts');
                 }
+
             } catch (error) {
                 console.error('Upload and extract topics error:', error);
                 alert('Failed to upload and extract topics.');
