@@ -5,6 +5,7 @@ import { Container } from '@mui/system';
 import axios from 'axios';
 import Navigation from "../views/Navigation";
 import {LinearProgress} from "@mui/joy";
+import loading2 from './loading/loading2.gif';
 
 export default function LoadingScreen() {
     const location = useLocation();
@@ -112,7 +113,7 @@ export default function LoadingScreen() {
             <Container maxWidth="sm">
                 <Box display="flex" flexDirection="column" alignItems="center" mt={5}>
                     <CircularProgress />
-                    <Typography variant="h6" mt={2}>영상 요약하는 중...</Typography>
+                    <img src={loading2} alt="Loading..." />
                     {/*<LinearProgress variant="determinate" value={progress} style={{ width: '100%' }} />*/}
                 </Box>
             </Container>
