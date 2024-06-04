@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {Box, Button, TextField, Typography, Avatar, Container, Paper} from '@mui/material';
+import { Box, Button, TextField, Typography, Avatar, Container, Paper, IconButton } from '@mui/material';
 import { useCookies } from "react-cookie";
 import { useNavigate } from 'react-router-dom';
+import { PhotoCamera, VideoCameraBack } from '@mui/icons-material';
 import Navigation from "../../views/Navigation";
 
 const BoardAdd = () => {
@@ -106,25 +107,25 @@ const BoardAdd = () => {
     };
 
     return (
-        <div>
+        <div style={{ backgroundColor: '#fafafa', minHeight: '100vh' }}>
             <Navigation/>
-            <div style={{ paddingTop: '150px' }}>
-                <Container style={{ maxWidth: '800px' }}>
-                    <Paper elevation={3} style={{ padding: '20px', borderRadius: '8px' }}>
-                        <Typography variant="h5" gutterBottom align="center">
-                            글 작성
+            <div style={{ paddingTop: '150px', paddingBottom: '50px' }}>
+                <Container maxWidth="sm">
+                    <Paper elevation={3} style={{ padding: '30px', borderRadius: '15px' }}>
+                        <Typography variant="h5" gutterBottom align="center" style={{ marginBottom: '30px', fontWeight: 'bold' }}>
+                            게시글 작성
                         </Typography>
 
-                        <Box display="flex" flexDirection="column" alignItems="center" marginBottom="20px">
-                            <Avatar src={user.userProfile} style={{ width: 60, height: 60 }} />
+                        <Box display="flex" flexDirection="column" alignItems="center" marginBottom="30px">
+                            <Avatar src={user.userProfile} style={{ width: 80, height: 80, marginBottom: '10px' }} />
                             <Typography variant="h6" gutterBottom>
                                 {user.userNickname}
                             </Typography>
                         </Box>
 
-                        <TextField  // 제목 입력 필드
+                        <TextField
                             fullWidth
-                            label="제목"
+                            label="Title"
                             variant="outlined"
                             value={postTitle}
                             onChange={(e) => setPostTitle(e.target.value)}
@@ -133,39 +134,56 @@ const BoardAdd = () => {
 
                         <TextField
                             fullWidth
-                            label="내용"
+                            label="Content"
                             variant="outlined"
                             multiline
-                            rows={8}
+                            rows={6}
                             value={postContent}
                             onChange={(e) => setPostContent(e.target.value)}
-                            style={{ marginBottom: '10px' }}
+                            style={{ marginBottom: '20px' }}
                         />
 
-                        <Box mt={2} marginBottom="40px">
-                            {postImagePreview && <img src={postImagePreview} alt="Post Preview" style={{ width: '100%', maxHeight: 300, marginBottom: '10px' }} />}
-                            {postVideoPreview && <video src={postVideoPreview} controls style={{ width: '100%', maxHeight: 300, marginBottom: '10px' }} />}
+                        <Box display="flex" justifyContent="space-between" marginBottom="20px">
+                            {postImagePreview && (
+                                <img src={postImagePreview} alt="Post Preview" style={{ width: '80%', maxHeight: '300px', objectFit: 'cover', borderRadius: '10px' }} />
+                            )}
+                            {postVideoPreview && (
+                                <video src={postVideoPreview} controls style={{ width: '80%', maxHeight: '300px', borderRadius: '10px' }} />
+                            )}
+                        </Box>
+
+
+                        <Box display="flex" justifyContent="center" marginBottom="30px">
                             <input accept="image/*" style={{ display: 'none' }} id="post-icon-button-file" type="file" onChange={handlePostImageChange} />
-                            <input accept="video/*" style={{ display: 'none' }} id="post-video-button-file" type="file" onChange={handlePostVideoChange} />
                             <label htmlFor="post-icon-button-file">
-                                <Button variant="contained" component="span">사진</Button>
+                                <IconButton color="primary" aria-label="upload picture" component="span">
+                                    <PhotoCamera />
+                                </IconButton>
                             </label>
+                            <input accept="video/*" style={{ display: 'none' }} id="post-video-button-file" type="file" onChange={handlePostVideoChange} />
                             <label htmlFor="post-video-button-file">
-                                <Button variant="contained" component="span" style={{ marginLeft: '10px' }}>비디오</Button>
+                                <IconButton color="primary" aria-label="upload video" component="span">
+                                    <VideoCameraBack />
+                                </IconButton>
                             </label>
                         </Box>
 
                         {errorMessage && (
-                            <Box mt={2} marginBottom="20px">
-                                <Typography color="error">{errorMessage}</Typography>
+                            <Box marginBottom="20px">
+                                <Typography color="error" align="center">{errorMessage}</Typography>
                             </Box>
                         )}
 
-                        <Box mt={2}>
-                            <Button fullWidth variant="contained" color="primary" onClick={handleCreatePost} disabled={isLoading}>
-                                {isLoading ? '게시 중...' : '게시'}
-                            </Button>
-                        </Box>
+                        <Button
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            onClick={handleCreatePost}
+                            disabled={isLoading}
+                            style={{ borderRadius: '10px', padding: '10px 0' }}
+                        >
+                            {isLoading ? '업로드 중...' : '업로드'}
+                        </Button>
                     </Paper>
                 </Container>
             </div>

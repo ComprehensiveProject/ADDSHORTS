@@ -6,22 +6,22 @@ import Navigation from "../views/Navigation";
 export default function ShortsTopicSelection() {
     const location = useLocation();
     const navigate = useNavigate();
-    const { topics = {}, fileData, userId } = location.state || {};  // 초기값 설정 및 값 할당
-    const [selectedTopic, setSelectedTopic] = useState('');
+    const { topics = {}, fileData, userId } = location.state || {};
+    const [selectedTopic, setSelectedTopic] = useState({ title: '', content: '' });
 
-    const handleTopicSelect = (topic) => {
-        setSelectedTopic(topic);
+    const handleTopicSelect = (topic, content) => {
+        setSelectedTopic({ title: topic, content });
     };
 
     const handleNext = () => {
-        if (!selectedTopic) {
+        if (!selectedTopic.title) {
             alert('주제를 선택해주세요.');
             return;
         }
 
         navigate('/shortsProcessing', {
             state: {
-                selectedTopic,
+                selectedTopic: selectedTopic.content,  // 주제의 내용을 전달
                 fileData,
                 userId
             }
@@ -30,7 +30,7 @@ export default function ShortsTopicSelection() {
 
     return (
         <div>
-            <Navigation/>
+            <Navigation />
             <Container maxWidth="sm">
                 <Box display="flex" flexDirection="column" alignItems="center" mt={5}>
                     <Typography variant="h5" mb={3}>Select a Topic</Typography>
@@ -39,8 +39,8 @@ export default function ShortsTopicSelection() {
                             <ListItem
                                 button
                                 key={index}
-                                selected={selectedTopic === topic}
-                                onClick={() => handleTopicSelect(topic)}
+                                selected={selectedTopic.title === topic}
+                                onClick={() => handleTopicSelect(topic, topics[topic])}
                             >
                                 <ListItemText primary={`${topic}: ${topics[topic]}`} />
                             </ListItem>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Box, Button, Typography, Container, TextField } from '@mui/material';
+import { Box, Button, Typography, Container, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import Navigation from "../Navigation";
@@ -9,6 +9,7 @@ export default function VideoShort() {
     const [videoFile, setVideoFile] = useState(null);
     const [videoPreview, setVideoPreview] = useState(null);
     const [userId, setUserId] = useState('');
+    const [category, setCategory] = useState('');
     const [cookies] = useCookies(['token']);
     const navigate = useNavigate();
 
@@ -38,28 +39,31 @@ export default function VideoShort() {
         setVideoPreview(URL.createObjectURL(file));
     };
 
+    const handleCategoryChange = (event) => {
+        setCategory(event.target.value);
+    };
+
     const handleUpload = async () => {
-        if (!videoFile || !userId) {
-            alert('Please provide a video and user ID.');
+        if (!videoFile || !userId || !category) {
+            alert('Please provide a video, user ID, and select a category.');
             return;
         }
 
-        const fileData = videoFile;
-        const formData = new FormData();
-        formData.append('video', videoFile);
-        formData.append('userId', userId);
-
-        navigate('/shortsLoading', {
-            state: {
-                fileData,
-                userId
-            }
-        });
+        if (category === 'news') {
+            navigate('/shortsLoading', {
+                state: {
+                    fileData: videoFile,
+                    userId
+                }
+            });
+        } else {
+            alert('This feature is currently available for news category only.');
+        }
     };
 
     return (
         <div>
-            <Navigation/>
+            <Navigation />
             <Container maxWidth="sm">
                 <Box display="flex" flexDirection="column" alignItems="center" mt={5}>
                     <Typography variant="h5" mb={3}>Upload Video</Typography>
@@ -73,6 +77,21 @@ export default function VideoShort() {
                             sx={{ marginBottom: 2 }}
                         />
                     )}
+                    <FormControl fullWidth variant="outlined" sx={{ marginBottom: 2 }}>
+                        <InputLabel id="category-label">Category</InputLabel>
+                        <Select
+                            labelId="category-label"
+                            id="category"
+                            value={category}
+                            onChange={handleCategoryChange}
+                            label="Category"
+                        >
+                            <MenuItem value="news">뉴스</MenuItem>
+                            <MenuItem value="sports">스포츠</MenuItem>
+                            <MenuItem value="drama_movie">드라마,영화</MenuItem>
+                            <MenuItem value="general">일반 영상</MenuItem>
+                        </Select>
+                    </FormControl>
                     <input
                         accept="video/*"
                         style={{ display: 'none' }}

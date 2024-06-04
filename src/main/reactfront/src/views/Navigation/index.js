@@ -18,6 +18,7 @@ const Navigation = () => {
     const [userProfile, setUserProfile] = useState(user ? user.userProfile : "path-to-default-image.jpg");
     const [userName, setUserName] = useState(user ? user.userName : "");
     const navigate = useNavigate();
+    const [loginSuccess, setLoginSuccess] = useState(false);
 
     const [anchorEl, setAnchorEl] = useState(null);
     const profileBtnRef = useRef(null);
@@ -62,7 +63,7 @@ const Navigation = () => {
                     const fetchedUser = response.data;
                     // 사용자 정보를 상태에 저장
                     setUser(fetchedUser);
-
+                    setLoginSuccess(true);
                     setUserProfile(fetchedUser.userProfile || "path-to-default-image.jpg");
                     setUserName(fetchedUser.userName || "");
                 })
@@ -82,9 +83,15 @@ const Navigation = () => {
     return (
         <div className='App'>
             <Navbar expand="lg" sticky="top" className={`custom-navbar mr-auto ${show ? 'visible' : 'hidden'}`}>
-                <Navbar.Brand href="/">
-                    <img src={logo} alt="Logo" className="abc"/>
-                </Navbar.Brand>
+                {loginSuccess ? (
+                        <Navbar.Brand href="/main">
+                            <img src={logo} alt="Logo" className="abc"/>
+                        </Navbar.Brand>)
+                    :
+                    (<Navbar.Brand href="/">
+                        <img src={logo} alt="Logo" className="abc"/>
+                    </Navbar.Brand>)
+                }
                 <Navbar.Toggle />
                 <Navbar.Collapse className="justify-content-center abcd">
                     <Nav>

@@ -4,31 +4,36 @@ import { useNavigate } from 'react-router-dom';
 import { useCookies } from "react-cookie";
 import {
     Button,
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableRow,
-    Avatar,
-    Container,
+    Card,
+    CardContent,
+    CardMedia,
     Typography,
-    Box, Paper
+    Container,
+    Box,
+    Avatar,
+    Grid,
+    Backdrop,
+    Fade
 } from '@mui/material';
 import Navigation from "../../views/Navigation";
+import addB from './images/addB.png';
+import loginImg from "../../logm/images/loginImg.png";
+import Modal from '../../logm/Modal';
 
 const BoardList = () => {
     const [boards, setBoards] = useState([]);
     const [user, setUser] = useState({});
-    const navigation = useNavigate();
+    const navigate = useNavigate();
     const [cookies] = useCookies(['token']);
-    const [currentPage, setCurrentPage] = useState(1);  // 현재 페이지 상태 변수
-    const postsPerPage = 10;
+    const [open, setOpen] = useState(false);
+    const [selectedMedia, setSelectedMedia] = useState(null);
+    const [loginModalOpen, setLoginModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchBoardsAndComments = async () => {
             try {
                 const boardResponse = await axios.get('/board');
-                console.log(boardResponse);
+                console.log('서버 응답:', boardResponse.data); // 서버 응답 데이터 확인
                 const boardsWithComments = await Promise.all(boardResponse.data.map(async board => {
                     const commentResponse = await axios.get(`/board/${board.boardNumber}/comments`);
                     return {
@@ -36,8 +41,8 @@ const BoardList = () => {
                         commentCount: commentResponse.data.length
                     };
                 }));
-                console.log(boardsWithComments);
-                setBoards(boardsWithComments);
+                console.log('코멘트 포함된 게시글:', boardsWithComments); // 서버 응답 데이터 확인
+                setBoards(boardsWithComments.reverse()); // 최신 글이 위로 오도록 배열 역순 정렬
             } catch (error) {
                 console.error("Error fetching boards and comment counts:", error);
             }
@@ -55,104 +60,164 @@ const BoardList = () => {
                             Authorization: `Bearer ${token}`
                         }
                     });
+                    console.log('사용자 데이터:', userDetails.data); // 사용자 데이터 확인
                     setUser(userDetails.data);
                 } catch (error) {
                     console.error("Error fetching user data:", error);
                 }
+            }else {
+                setLoginModalOpen(true);
             }
         };
 
         fetchUserData();
     }, [cookies.token]);
 
+    const closeModalAndNavigate = () => {
+        setLoginModalOpen(false);
+        navigate('/signin');
+    };
+
     const handleTitleClick = async (board) => {
         try {
             if (user.userId !== board.boardWriterId) { // 작성자와 현재 사용자가 다른 경우에만
                 await axios.post(`/board/${board.boardNumber}/incrementView`);
             }
-            navigation(`/boardDetail/${board.boardNumber}`);
+            navigate(`/boardDetail/${board.boardNumber}`);
         } catch (error) {
             console.error("Error incrementing view count:", error);
         }
+    };
+
+    const handleMediaClick = (media) => {
+        setSelectedMedia(media);
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+        setSelectedMedia(null);
+    };
+
+
+    if (loginModalOpen) {
+        return (
+            <Modal isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)}>
+
+                <div className="speechModalCenter">
+                    <img src={loginImg} alt='로그인 이미지' className="speechLoginImg"/>
+                    <h4>로그인 후 이용해 주세요</h4>
+                    <button onClick={closeModalAndNavigate} className="modal-custom-button">
+                        닫기
+                    </button>
+                </div>
+            </Modal>
+        );
     }
-
-    const indexOfLastPost = currentPage * postsPerPage;  // 현재 페이지의 마지막 게시물 인덱스
-    const indexOfFirstPost = indexOfLastPost - postsPerPage;  // 현재 페이지의 첫 번째 게시물 인덱스
-    const currentPosts = boards.slice(indexOfFirstPost, indexOfLastPost);  // 현재 페이지의 게시물들
-
-    const totalPages = Math.ceil(boards.length / postsPerPage);  // 총 페이지 수
-
-    const nextPage = () => {
-        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-    };
-
-    const prevPage = () => {
-        if (currentPage > 1) setCurrentPage(currentPage - 1);
-    };
 
     return (
         <div>
-            <Navigation/>
-            <div align="center" style={{ paddingTop: '150px' }}>
-                <Container maxWidth="md" style={{
-                    border: '1px solid #e0e0e0',
-                    borderRadius: '15px',
-                    padding: '20px',
-                    boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.1)', // 그림자 추가
-                    backgroundColor: 'white' // 배경색 추가
-                }}>
-                    <Box display="flex" justifyContent="center" marginBottom="10px">
-                        <Typography variant="h4" gutterBottom>
-                            영상 공유 게시판
-                        </Typography>
-                    </Box>
-                    <Box display="flex" justifyContent="center">
-                        <Typography variant="h6" style={{ marginBottom: '5px', color: '#333' }}>
-                            요약한 영상을 공유해보세요❤️
-                        </Typography>
-                    </Box>
-                    <Box display="flex" justifyContent="flex-end" style={{ marginBottom: '20px' }}>
-                        <Button variant="contained" color="primary" onClick={() => navigation('/boardAdd')}>
-                            글작성
-                        </Button>
-                    </Box>
-                    <Paper elevation={3} style={{borderRadius: '8px'}}>
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>글번호</TableCell>
-                                    <TableCell>제목</TableCell>
-                                    <TableCell>작성자</TableCell>
-                                    <TableCell>작성 날짜</TableCell>
-                                    <TableCell>조회수</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {currentPosts.map(board => (
-                                    <TableRow key={board.boardNumber}>
-                                        <TableCell>{board.boardNumber}</TableCell>
-                                        <TableCell>
-                                            <Button onClick={() => handleTitleClick(board)}>
-                                                {board.boardTitle}
-                                                <span style={{marginLeft: '10px', color: 'grey'}}>
-                                            ({board.commentCount})
-                                        </span>
-                                            </Button>
-                                        </TableCell>
-                                        <TableCell>{board.boardWriterId}</TableCell>
-                                        <TableCell>{board.boardWriteDate}</TableCell>
-                                        <TableCell>{board.boardClickCount}</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </Paper>
-                    <Box display="flex" justifyContent="space-between" style={{marginTop: '20px'}}>
-                        <Button onClick={prevPage} disabled={currentPage === 1}>Previous</Button>
-                        <Button onClick={nextPage} disabled={currentPage === totalPages}>Next</Button>
-                    </Box>
-                </Container>
-            </div>
+            <Navigation />
+            <Container maxWidth="sm">
+                <Box display="flex" justifyContent="center" alignItems="center" marginTop="150px">
+                    <Typography variant="h4" gutterBottom style={{ fontSize: '2.5rem', fontWeight: 'bold', fontFamily: 'Permanent Marker, cursive' }}>
+                        shortsgram
+                    </Typography>
+                </Box>
+                <Box display="flex" justifyContent="flex-end" marginBottom="40px">
+                    <Button onClick={() => navigate('/boardAdd')}>
+                        <img src={addB} alt="글작성" style={{ width: '40px', height: '40px' }} />
+                    </Button>
+                </Box>
+                <Grid container spacing={4}>
+                    {boards.map(board => (
+                        <Grid item key={board.boardNumber} xs={12}>
+                            <Card>
+                                <CardContent>
+                                    <Box display="flex" alignItems="center" marginBottom="10px">
+                                        <Avatar>{board.boardWriterId.charAt(0)}</Avatar>
+                                        <Box marginLeft="10px">
+                                            <Typography variant="body2" color="textSecondary">
+                                                {board.boardWriterId}
+                                            </Typography>
+                                            <Typography variant="body2" color="textSecondary">
+                                                {new Date(board.boardWriteDate).toLocaleDateString()}
+                                            </Typography>
+                                        </Box>
+                                    </Box>
+                                    <Box onClick={() => handleTitleClick(board)}>
+                                        {board.boardImage ? (
+                                            <CardMedia
+                                                component="img"
+                                                alt="게시글 이미지"
+                                                height="400"
+                                                image={board.boardImage}
+                                                title={board.boardTitle}
+                                                onError={(e) => { e.target.onerror = null; e.target.src = "https://via.placeholder.com/400"; }} // 이미지 로드 실패 시 대체 이미지 표시
+                                                style={{ marginBottom: '10px', cursor: 'pointer', borderRadius: '8px' }}
+                                            />
+                                        ) : board.boardVideo ? (
+                                            <CardMedia
+                                                component="video"
+                                                controls
+                                                height="400"
+                                                src={board.boardVideo}
+                                                title={board.boardTitle}
+                                                style={{ marginBottom: '10px', cursor: 'pointer', borderRadius: '8px' }}
+                                            />
+                                        ) : (
+                                            <Typography variant="body2" color="textSecondary" style={{ marginBottom: '10px' }}>
+                                                {board.boardContent}
+                                            </Typography>
+                                        )}
+                                    </Box>
+                                    <Typography variant="h6" component="h2" style={{ fontWeight: 'bold', marginBottom: '10px' }}>
+                                        {board.boardTitle}
+                                    </Typography>
+                                    <Typography variant="body1" color="textSecondary" component="p" style={{ fontSize: '1rem', fontWeight: 'bold' }}>
+                                        조회수: {board.boardClickCount}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                    ))}
+                </Grid>
+                <Modal
+                    open={open}
+                    onClose={handleClose}
+                    closeAfterTransition
+                    BackdropComponent={Backdrop}
+                    BackdropProps={{
+                        timeout: 500,
+                    }}
+                >
+                    <Fade in={open}>
+                        <Box
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                            style={{
+                                position: 'absolute',
+                                top: '50%',
+                                left: '50%',
+                                transform: 'translate(-50%, -50%)',
+                                backgroundColor: 'white',
+                                boxShadow: 24,
+                                padding: '20px',
+                                outline: 'none',
+                            }}
+                        >
+                            {selectedMedia && (
+                                selectedMedia.endsWith('.mp4') || selectedMedia.endsWith('.webm') ? (
+                                    <video src={selectedMedia} controls style={{ width: '100%', maxHeight: '80vh' }} />
+                                ) : (
+                                    <img src={selectedMedia} alt="Media" style={{ width: '100%', maxHeight: '80vh' }} />
+                                )
+                            )}
+                        </Box>
+                    </Fade>
+                </Modal>
+            </Container>
         </div>
     );
 }

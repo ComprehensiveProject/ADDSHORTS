@@ -10,7 +10,7 @@ export default function ShortsVideoPreview() {
     const handleDownload = () => {
         const link = document.createElement('a');
         link.href = videoUrl;
-        link.setAttribute('download', 'summarized_video.mp4'); // 다운로드될 파일명 설정
+        link.setAttribute('download', 'summarized_video.mp4');
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

@@ -5,6 +5,7 @@ import com.project.as.entity.BoardEntity;
 import com.project.as.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -29,6 +30,7 @@ public class BoardService {
         return boardRepository.save(board);
     }
 
+    @Transactional
     public void deleteBoard(int boardNumber) {
         boardRepository.deleteByBoardNumber(boardNumber);
     }

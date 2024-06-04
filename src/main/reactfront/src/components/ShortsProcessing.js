@@ -24,7 +24,6 @@ export default function ShortsProcessingScreen() {
                 });
 
                 if (response.status === 200) {
-                    const videoUrl = response.data.video_url;
 
                     const latestVideoResponse = await axios.get('/api/videos/latestOriginal', {
                         params: {
@@ -34,9 +33,12 @@ export default function ShortsProcessingScreen() {
 
                     if (latestVideoResponse.data.result) {
                         console.error('Upload:', latestVideoResponse.data.data);
+                        const originalVideoUrl = latestVideoResponse.data.data.oriVideo;
                         const oriNo = latestVideoResponse.data.data.oriNo;
 
-                        // Save shorts video
+                        const videoUrl = response.data.video_url;
+
+                        // Save summary video
                         const summaryForm = new FormData();
                         summaryForm.append('summaryVideoUrl', videoUrl);
                         summaryForm.append('oriNo', oriNo);
@@ -45,14 +47,11 @@ export default function ShortsProcessingScreen() {
                         const saveSummaryResponse = await axios.post('/api/videos/uploadSummary', summaryForm);
 
                         if (saveSummaryResponse.data.result) {
-                            navigate('/shortsPreview', { state: { videoUrl: videoUrl } });
+                            navigate('/shortsPreview', { state: { videoUrl } });
                         } else {
                             alert('Failed to save summary video.');
                             navigate('/shorts');
                         }
-                    } else {
-                        alert('Failed to get latest original video.');
-                        navigate('/shorts');
                     }
                 } else {
                     alert('Failed to process video.');

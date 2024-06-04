@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
-import {Container, Typography, Divider, Box, Button, TextField, Grid} from '@mui/material';
+import { Container, Typography, Divider, Box, Button, TextField, Grid } from '@mui/material';
 import { useCookies } from "react-cookie";
 import Avatar from "@mui/material/Avatar";
 import Navigation from "../../views/Navigation";
 
 const BoardDetail = () => {
     const [boardDetail, setBoardDetail] = useState({});
-    const [currentUser, setCurrentUser] = useState({});  // 현재 사용자 정보를 저장할 state
+    const [currentUser, setCurrentUser] = useState({});
     const { boardId } = useParams();
     const navigate = useNavigate();
     const [cookies] = useCookies(['token']);
-    const [comments, setComments] = useState([]);  // 댓글 리스트
+    const [comments, setComments] = useState([]);
     const [comment, setComment] = useState('');
 
     useEffect(() => {
@@ -62,7 +62,12 @@ const BoardDetail = () => {
 
     const handleDelete = async () => {
         try {
-            await axios.delete(`/board/${boardId}`);
+            const token = cookies.token;
+            await axios.delete(`/board/${boardId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
             alert('게시글이 삭제되었습니다.');
             navigate('/board');
         } catch (error) {
@@ -75,17 +80,13 @@ const BoardDetail = () => {
         navigate('/board');
     }
 
-    // 댓글을 서버에 전송하는 함수
     const handlePostComment = async () => {
         try {
-
             const commentData = {
                 boardNumber: boardId,
                 commentWriterId: currentUser.userId,
                 commentContent: comment
             };
-
-            console.log(commentData)
 
             const response = await axios.post(`/board/${boardId}/comments`, commentData);
             setComments([...comments, response.data]);
@@ -95,94 +96,96 @@ const BoardDetail = () => {
         }
     };
 
-
     return (
         <div>
-            <Navigation/>
-            <div style={{ paddingTop: '150px' }}>
+            <Navigation />
+            <div style={{ paddingTop: '150px', backgroundColor: '#fafafa' }}>
                 <Container
-                    maxWidth="md"
+                    maxWidth="sm"
                     style={{
-                        border: '1px solid #e0e0e0',
-                        borderRadius: '15px',
-                        padding: '20px',
-                        boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.1)',
+                        border: '1px solid #dbdbdb',
+                        borderRadius: '3px',
+                        padding: '0px',
+                        boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)',
                         backgroundColor: 'white',
                         paddingBottom: '40px'
                     }}
                 >
                     <Box mb={4}>
-                        <Typography variant="h4" gutterBottom>
-                            {boardDetail.boardTitle}
-                        </Typography>
-                        <Divider />
-                        <Box my={2} display="flex" flexDirection="column" alignItems="start">
-                            <Typography variant="subtitle1" color="textSecondary">
-                                작성자: {boardDetail.boardWriterId}
-                            </Typography>
-                            <Typography variant="subtitle1" color="textSecondary">
-                                작성 날짜: {boardDetail.boardWriteDate}
+                        <Box display="flex" alignItems="center" p={2}>
+                            <Avatar src="/broken-image.jpg" />
+                            <Typography variant="subtitle1" style={{ marginLeft: '10px', fontWeight: 'bold' }}>
+                                {boardDetail.boardWriterId}
                             </Typography>
                         </Box>
-                        <Box mt={5} mb={5}>
-                            <Typography variant="body1">
+                        <Divider />
+                        <Box my={2} p={2}>
+                            <Typography variant="h5" gutterBottom>
+                                {boardDetail.boardTitle}
+                            </Typography>
+                            <Typography variant="body1" style={{ whiteSpace: 'pre-line' }}>
                                 {boardDetail.boardContent}
                             </Typography>
                         </Box>
                         {boardDetail.boardImage && (
-                            <Box my={4}>
+                            <Box>
                                 <img
                                     src={boardDetail.boardImage}
                                     alt="Board Image"
-                                    style={{ width: '100%', maxHeight: 500, objectFit: 'cover', borderRadius: '10px' }}
+                                    style={{ width: '100%', objectFit: 'cover' }}
                                 />
                             </Box>
                         )}
                         {boardDetail.boardVideo && (
-                            <Box my={4}>
+                            <Box>
                                 <video
                                     src={boardDetail.boardVideo}
                                     alt="Board Video"
-                                    style={{ width: '100%', maxHeight: 500, objectFit: 'cover', borderRadius: '10px' }}
+                                    style={{ width: '100%', objectFit: 'cover' }}
                                     controls
                                 />
                             </Box>
                         )}
-
-                        <Box mt={5} display="flex" justifyContent="flex-end">
+                        <Box p={2}>
+                            <Typography variant="caption" color="textSecondary">
+                                {boardDetail.boardWriteDate}
+                            </Typography>
+                        </Box>
+                        <Box display="flex" justifyContent="flex-end" p={2}>
                             {currentUser.userId === boardDetail.boardWriterId && (
                                 <>
-                                    <Button variant="contained" color="primary" style={{ marginRight: '10px' }} onClick={handleEdit}>
+                                    <Button variant="text" color="primary" style={{ marginRight: '10px' }} onClick={handleEdit}>
                                         수정
                                     </Button>
-                                    <Button variant="contained" color="secondary" style={{ marginRight: '10px' }} onClick={handleDelete}>
+                                    <Button variant="text" color="secondary" style={{ marginRight: '10px' }} onClick={handleDelete}>
                                         삭제
                                     </Button>
                                 </>
                             )}
-                            <Button variant="outlined" onClick={handleGoToBoardList}>
+                            <Button variant="text" onClick={handleGoToBoardList}>
                                 목록
                             </Button>
                         </Box>
                     </Box>
 
-                    <Divider style={{ marginTop: '20px', marginBottom: '20px' }} />
+                    <Divider />
 
-                    <Box mt={5}>
-                        <Typography variant="h5" style={{ marginBottom: '15px' }}>
+                    <Box mt={2} p={2}>
+                        <Typography variant="h6" style={{ marginBottom: '15px' }}>
                             댓글 ({comments.length})
                         </Typography>
                         <Box>
                             {comments.map((comment, index) => (
                                 <Box key={index} style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                    <Typography variant="subtitle1" style={{ marginRight: '15px' }}>
-                                        {comment.commentWriterId}
-                                    </Typography>
-                                    <Typography variant="body2">
-                                        {comment.commentContent}
-                                    </Typography>
-                                    <Box style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
-                                        <Typography variant="caption" color="textSecondary" style={{ marginLeft: '15px' }}>
+                                    <Avatar src="/broken-image.jpg" style={{ width: '30px', height: '30px', marginRight: '10px' }} />
+                                    <Box>
+                                        <Typography variant="subtitle2" style={{ fontWeight: 'bold' }}>
+                                            {comment.commentWriterId}
+                                        </Typography>
+                                        <Typography variant="body2">
+                                            {comment.commentContent}
+                                        </Typography>
+                                        <Typography variant="caption" color="textSecondary">
                                             {new Date(comment.commentWriteDate).toLocaleString()}
                                         </Typography>
                                     </Box>
@@ -201,7 +204,7 @@ const BoardDetail = () => {
                             </Grid>
                             <Grid item xs={2}>
                                 <Button variant="contained" onClick={handlePostComment}>
-                                    댓글 등록
+                                    등록
                                 </Button>
                             </Grid>
                         </Grid>
