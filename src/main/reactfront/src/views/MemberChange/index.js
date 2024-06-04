@@ -4,6 +4,10 @@ import { Box, Button, TextField, Typography, Avatar, Container } from '@mui/mate
 import { useCookies } from "react-cookie";
 import {useNavigate} from "react-router-dom";
 import Navigation from "../Navigation";
+import Modal from '../../logm/Modal';
+import lockP from './images/lockP.png';
+import '../../logm/Modal.css';
+import {styled} from '@mui/system';
 
 export default function MemberChange() {
     const [isVerified, setIsVerified] = useState(false);
@@ -13,6 +17,7 @@ export default function MemberChange() {
     const [userProfile, setUserProfile] = useState(null);
     const [userProfilePreview, setUserProfilePreview] = useState(null);
     const navigate = useNavigate();
+    const [loginModalOpen, setLoginModalOpen] = useState(false);
 
     const [user, setUser] = useState({
         userEmail: '',
@@ -34,6 +39,7 @@ export default function MemberChange() {
                         }
                     });
                     setUser(userDetails.data);
+                    setLoginModalOpen(true);
                 } catch (error) {
                     console.error("Error fetching user data:", error);
                 }
@@ -75,6 +81,7 @@ export default function MemberChange() {
                     }
                 });
                 setUser(userDetails.data);
+                setLoginModalOpen(false);
             } else {
                 setErrorMessage('비밀번호가 일치하지 않습니다.');
             }
@@ -82,6 +89,25 @@ export default function MemberChange() {
             setErrorMessage('An error occurred. Please try again.');
         }
     };
+
+    const Container = styled(Box)({
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        backgroundColor: '#eceff1',
+    });
+
+    const StyledForm = styled(Box)({
+        width: '100%',
+        maxWidth: '600px',
+        padding: '40px',
+        borderRadius: '8px',
+        backgroundColor: '#ffffff',
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+        textAlign: 'center',
+    });
 
     const handleImageChange = (e) => {
         if (e.target.files && e.target.files[0]) {
@@ -156,28 +182,14 @@ export default function MemberChange() {
         }
     };
 
-    if (!isVerified) {
+    if (loginModalOpen) {
         return (
-            <div>
-                <Navigation/>
-                <Container
-                    maxWidth="xs"
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        height: '100vh',
-                        backgroundColor: '#f4f4f8',
-                        padding: 3
-                    }}
-                >
-                    <Typography
-                        variant="h6"
-                        sx={{ marginBottom: 2 }}
-                    >
-                        비밀번호 확인
-                    </Typography>
+            <Modal isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)}>
+
+                <div className="speechModalCenter">
+                    <img src={lockP} alt='개인정보 이미지' className="speechLoginImga"/>
+                    <h4>비밀번호를 한번 더 입력해주세요</h4>
+                    <div style={{marginTop : '30px'}}/>
                     <TextField
                         type="password"
                         label="Password"
@@ -185,73 +197,99 @@ export default function MemberChange() {
                         onChange={(e) => setPassword(e.target.value)}
                         sx={{ marginBottom: 1 }}
                     />
-                    {errorMessage && <Typography color="error" sx={{ marginBottom: 2 }}>{errorMessage}</Typography>}
-                    <Button
-                        sx={{
-                            backgroundColor: '#3f51b5',
-                            color: 'white',
-                            '&:hover': {
-                                backgroundColor: '#303f9f'
-                            }
-                        }}
-                        onClick={handlePasswordVerification}
-                    >
+
+                    <button onClick={handlePasswordVerification} type="submit" className="modal-custom-button">
                         확인
-                    </Button>
-                </Container>
-            </div>
+                    </button>
+                    {errorMessage && <Typography color="error" sx={{ marginBottom: 2 }}>{errorMessage}</Typography>}
+                </div>
+            </Modal>
         );
     }
 
     return (
-        <div>
+        <div className='App'>
             <Navigation/>
-            <Container maxWidth="xs" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-                <Avatar className="user-avatar" src={userProfilePreview || user.userProfile} style={{ width: 100, height: 100, marginBottom: 20 }} />
-                <input accept="image/*" style={{ display: 'none' }} id="icon-button-file" type="file" onChange={handleImageChange} />
-                <label htmlFor="icon-button-file">
-                    <Button variant="contained" component="span">프로필 사진 변경</Button>
-                </label>
-                <Box mt={2} width="100%">
-                    <Box display="flex" alignItems="center" mt={2}>
-                        <TextField
-                            fullWidth
-                            label="이메일 주소"
-                            type="email"
-                            variant="standard"
-                            value={user.userEmail}
-                            disabled
-                        />
+            <Container>
+                <StyledForm>
+                    <Typography variant="h5" sx={{mb: 4, color: '#0d47a1' , fontFamily: "Noto Sans KR Medium"}}>개인정보 수정</Typography>
+
+                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', mb: 3 }}>
+                        <Avatar className="user-avatar" src={userProfilePreview || user.userProfile} style={{ width: 100, height: 100, marginBottom: 20 }} />
+                        <input accept="image/*" style={{ display: 'none' }} id="icon-button-file" type="file" onChange={handleImageChange} />
+                        <label htmlFor="icon-button-file">
+                            <Button variant="outlined" color="primary" component="span"
+                                    sx={{width: '150px',fontFamily: "Noto Sans KR Medium"}}>프로필 사진 변경</Button>
+                        </label>
                     </Box>
-                    <Box display="flex" alignItems="center" mt={2}>
-                        <TextField
-                            fullWidth
-                            label="이름"
-                            variant="standard"
-                            value={user.userName}
-                            error={!!validationErrors.userName}
-                            helperText={validationErrors.userName}
-                            onChange={(e) => setUser(prev => ({ ...prev, userName: e.target.value }))}
-                        />
+
+                    <TextField
+                        fullWidth
+                        type="email"
+                        variant="standard"
+                        value={`이메일 주소 : ${user.userEmail}`}
+                        disabled
+                        InputProps={{
+                            readOnly: true,
+                            style: {
+                                color: 'midnightblue',
+                                fontWeight: 'bold',
+                                fontSize: '16px'
+                            }
+                        }}
+                    />
+
+                    <TextField
+                        fullWidth
+                        variant="outlined"
+                        value={user.userName}
+                        error={!!validationErrors.userName}
+                        helperText={validationErrors.userName}
+                        onChange={(e) => setUser(prev => ({ ...prev, userName: e.target.value }))}
+                        sx={{mb: 2}}
+                        id="name"
+                        label="이름"
+                        name="name"
+                        autoComplete="name"
+                        placeholder="이름 입력"
+                    />
+                    <TextField
+                        fullWidth
+                        label="휴대폰 번호"
+                        variant="outlined"
+                        value={user.userPhone}
+                        error={!!validationErrors.userPhone}
+                        helperText={validationErrors.userPhone}
+                        onChange={(e) => setUser(prev => ({ ...prev, userPhone: e.target.value }))}
+                        sx={{mb: 3}}
+                        name="phone"
+                        id="phone"
+                        placeholder="번호 입력"
+                    />
+
+                    {/*<TextField*/}
+                    {/*    fullWidth*/}
+                    {/*    label="비밀번호"*/}
+                    {/*    variant="outlined"*/}
+                    {/*    value={user.userPhone}*/}
+                    {/*    error={!!validationErrors.userPhone}*/}
+                    {/*    helperText={validationErrors.userPhone}*/}
+                    {/*    onChange={(e) => setUser(prev => ({ ...prev, userPhone: e.target.value }))}*/}
+                    {/*    sx={{mb: 3}}*/}
+                    {/*    name="phone"*/}
+                    {/*    id="phone"*/}
+                    {/*    placeholder="번호 입력"*/}
+                    {/*/>*/}
+
+
+                    <Box sx={{display: 'flex', justifyContent: 'center', gap: 2, mt: 2}}>
+                        <Button variant="contained" color="primary" onClick={handleUpdate}
+                                sx={{width: '150px',fontFamily: "Noto Sans KR Medium"}}>저장</Button>
                     </Box>
-                    <Box display="flex" alignItems="center" mt={2}>
-                        <TextField
-                            fullWidth
-                            label="휴대폰 번호"
-                            variant="standard"
-                            value={user.userPhone}
-                            error={!!validationErrors.userPhone}
-                            helperText={validationErrors.userPhone}
-                            onChange={(e) => setUser(prev => ({ ...prev, userPhone: e.target.value }))}
-                        />
-                    </Box>
-                    <Box mt={4}>
-                        <Button fullWidth onClick={handleUpdate}>
-                            수정하기
-                        </Button>
-                    </Box>
-                </Box>
+                </StyledForm>
             </Container>
+
+
         </div>
     );
 }

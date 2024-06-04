@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
     Box, Button, Typography, Container, MenuItem, Select, FormControl, InputLabel, Grid, IconButton, Paper, Card, CardContent,
-    LinearProgress, Tooltip, Divider, Alert, Avatar, Stepper, Step, StepLabel, Snackbar
+    LinearProgress, Tooltip, Divider, Alert, Stepper, Step, StepLabel, Snackbar
 } from '@mui/material';
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +12,8 @@ import UploadFileIcon from '@mui/icons-material/UploadFile';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
+import Modal from '../../logm/Modal';
+import loginImg from '../../logm/images/loginImg.png';
 import './style.css';
 
 export default function VideoSummary() {
@@ -24,6 +26,7 @@ export default function VideoSummary() {
     const [cookies] = useCookies(['token']);
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const navigate = useNavigate();
+    const [loginModalOpen, setLoginModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -40,10 +43,17 @@ export default function VideoSummary() {
                 } catch (error) {
                     console.error("Error fetching user data:", error);
                 }
+            } else {
+                setLoginModalOpen(true);
             }
         };
         fetchUserData();
-    }, [cookies.token]);
+    }, [cookies]);
+
+    const closeModalAndNavigate = () => {
+        setLoginModalOpen(false);
+        navigate('/signin');
+    };
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
@@ -102,6 +112,21 @@ export default function VideoSummary() {
         const remainingSeconds = seconds % 60;
         return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
     };
+
+    if (loginModalOpen) {
+        return (
+            <Modal isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)}>
+
+                <div className="speechModalCenter">
+                    <img src={loginImg} alt='로그인 이미지' className="speechLoginImg"/>
+                    <h4>로그인 후 이용해 주세요</h4>
+                    <button onClick={closeModalAndNavigate} className="modal-custom-button">
+                        닫기
+                    </button>
+                </div>
+            </Modal>
+        );
+    }
 
     return (
         <div>
@@ -255,9 +280,6 @@ export default function VideoSummary() {
                         </Box>
                     </Box>
                 </Container>
-
-
-
             )}
 
             <Snackbar
