@@ -56,7 +56,14 @@ export default function VideoShort() {
                     userId
                 }
             });
-        } else {
+        } else if(category === 'sports'){
+            navigate('/sportsShortsLoading', {
+                state: {
+                    fileData: videoFile,
+                    userId
+                }
+            });
+        }else {
             alert('This feature is currently available for news category only.');
         }
     };
