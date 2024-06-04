@@ -145,6 +145,16 @@ export default function MemberChange() {
         }
     };
 
+    const handleBlur = (field, value) => {
+        setUser(prev => ({ ...prev, [field]: value }));
+        // validation logic here
+        if (!value) {
+            setValidationErrors(prev => ({ ...prev, [field]: `${field} is required` }));
+        } else {
+            setValidationErrors(prev => ({ ...prev, [field]: '' }));
+        }
+    };
+
 
 
     const handleUpdate = async () => {
@@ -242,11 +252,11 @@ export default function MemberChange() {
                     <TextField
                         fullWidth
                         variant="outlined"
-                        value={user.userName}
+                        defaultValue={user.userName}
                         error={!!validationErrors.userName}
                         helperText={validationErrors.userName}
-                        onChange={(e) => setUser(prev => ({ ...prev, userName: e.target.value }))}
-                        sx={{mb: 2}}
+                        onBlur={(e) => handleBlur('userName', e.target.value)}
+                        sx={{ mb: 2 }}
                         id="name"
                         label="이름"
                         name="name"
@@ -257,11 +267,11 @@ export default function MemberChange() {
                         fullWidth
                         label="휴대폰 번호"
                         variant="outlined"
-                        value={user.userPhone}
+                        defaultValue={user.userPhone}
                         error={!!validationErrors.userPhone}
                         helperText={validationErrors.userPhone}
-                        onChange={(e) => setUser(prev => ({ ...prev, userPhone: e.target.value }))}
-                        sx={{mb: 3}}
+                        onBlur={(e) => handleBlur('userPhone', e.target.value)}
+                        sx={{ mb: 3 }}
                         name="phone"
                         id="phone"
                         placeholder="번호 입력"
