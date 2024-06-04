@@ -12,12 +12,13 @@ import {
     Box,
     Avatar,
     Grid,
-    Modal,
     Backdrop,
     Fade
 } from '@mui/material';
 import Navigation from "../../views/Navigation";
 import addB from './images/addB.png';
+import loginImg from "../../logm/images/loginImg.png";
+import Modal from '../../logm/Modal';
 
 const BoardList = () => {
     const [boards, setBoards] = useState([]);
@@ -26,6 +27,7 @@ const BoardList = () => {
     const [cookies] = useCookies(['token']);
     const [open, setOpen] = useState(false);
     const [selectedMedia, setSelectedMedia] = useState(null);
+    const [loginModalOpen, setLoginModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchBoardsAndComments = async () => {
@@ -63,11 +65,18 @@ const BoardList = () => {
                 } catch (error) {
                     console.error("Error fetching user data:", error);
                 }
+            }else {
+                setLoginModalOpen(true);
             }
         };
 
         fetchUserData();
     }, [cookies.token]);
+
+    const closeModalAndNavigate = () => {
+        setLoginModalOpen(false);
+        navigate('/signin');
+    };
 
     const handleTitleClick = async (board) => {
         try {
@@ -89,6 +98,22 @@ const BoardList = () => {
         setOpen(false);
         setSelectedMedia(null);
     };
+
+
+    if (loginModalOpen) {
+        return (
+            <Modal isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)}>
+
+                <div className="speechModalCenter">
+                    <img src={loginImg} alt='로그인 이미지' className="speechLoginImg"/>
+                    <h4>로그인 후 이용해 주세요</h4>
+                    <button onClick={closeModalAndNavigate} className="modal-custom-button">
+                        닫기
+                    </button>
+                </div>
+            </Modal>
+        );
+    }
 
     return (
         <div>
