@@ -1,0 +1,163 @@
+.styled-containert {
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 12px;
+    border-radius: 12px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+    border: 2px solid #FF6347;
+    width: 50%;
+    max-width: 400px;
+    background-color: #fcf0f0;
+}
+
+.custom-buttonst {
+    background-color: #ff4e50;
+    background-image: linear-gradient(45deg, #ff4e50, #d6001c);
+    color: #fff;
+    max-width: 300px;  /* 최대 너비 조정 */
+    font-size: 1.2rem;  /* 글꼴 크기 */
+    font-weight: bold;
+    border-radius: 30px;  /* 둥근 모서리 */
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* 그림자 */
+    padding: 12px 24px;  /* 패딩 추가 */
+    border: none; /* 테두리 제거 */
+    text-transform: uppercase; /* 대문자 변환 */
+    letter-spacing: 1px; /* 글자 간격 */
+}
+
+.custom-buttonst:hover {
+    background-color: #ff6347; /* 호버 시 배경색 */
+    background-image: linear-gradient(45deg, #ff6347, #ff4500); /* 호버 시 그라디언트 배경 */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);  /* 더 강한 그림자 */
+}
+
+.custom-buttonst:active {
+    background-color: #cc2936; /* 클릭 시 배경색 */
+    background-image: linear-gradient(45deg, #cc2936, #990000); /* 클릭 시 그라디언트 배경 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 클릭 시 그림자 축소 */
+}
+
+.custom-buttonst:focus {
+    outline: none; /* 포커스 시 외곽선 제거 */
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.6); /* 포커스 시 흰색 그림자 */
+}
+
+
+
+.summary-time-formt {
+    max-width: 300px;  /* Reduced max-width */
+}
+
+.titlest {
+    font-weight: bold;
+    color: #E65540;
+    margin-bottom: 40px;
+    margin-top: 10px;
+}
+
+.info-papert {
+    padding: 16px;  /* Reduced padding */
+    border-radius: 12px;  /* Reduced border-radius */
+    text-align: center;
+    background-color: #e3f2fd;
+    margin-bottom: 12px;  /* Reduced margin */
+}
+
+.info-textt {
+    color: #E65540;
+    font-size: 1rem;  /* Reduced font size */
+    font-weight: bold;
+    margin-bottom: 12px;  /* Reduced margin */
+}
+
+.info-cardt {
+    padding: 12px;  /* Reduced padding */
+    border-radius: 12px;  /* Reduced border-radius */
+    margin-bottom: 12px;  /* Reduced margin */
+    background-color: #e0f7fa;
+    border: 1px solid #E65540;
+}
+
+.info-titlet {
+    margin-bottom: 30px;  /* Reduced margin */
+    color: #E65540;
+    font-weight: bold;
+}
+
+.info-stept {
+    margin-bottom: 6px;  /* Reduced margin */
+    color: #E65540;
+    font-size: 1rem;  /* Reduced font size */
+    font-weight: bold;
+}
+
+.info-notet {
+    margin-bottom: 6px;  /* Reduced margin */
+    color: #E65540;
+    font-size: 0.9rem;  /* Reduced font size */
+}
+
+.info-alertt {
+    margin-bottom: 12px;  /* Reduced margin */
+}
+
+
+.avatar-textt {
+    color: #E65540;
+    font-size: 1rem;  /* Reduced font size */
+    margin-bottom: 12px;  /* Reduced margin */
+}
+
+.upload-progress-bart {
+    width: 100%;
+    margin-top: 12px;  /* Reduced margin */
+}
+
+.steppert {
+    width: 100%;
+    margin-top: 20px;  /* Reduced margin */
+}
+
+.styled-videot {
+    width: 100%; /* Full width to fill the container */
+    height: auto; /* Maintain the aspect ratio */
+    max-width: 800px; /* Set a maximum width to prevent it from getting too large */
+    border: 2px solid white; /* Reduced border thickness */
+    border-radius: 12px; /* Reduced border-radius */
+}
+
+.cdt {
+    margin-top: 250px; /* Reduced margin */
+    display: flex;
+    flex-direction: row; /* Changed to row to align items horizontally */
+    align-items: flex-start;
+    justify-content: flex-start;
+    text-align: left;
+}
+
+.video-boxt {
+    flex: 0 0 70%; /* Ensure the video box takes up 60% of the container width */
+    margin-right: 20px; /* Increased margin to push video further left */
+    display: flex;
+    justify-content: center; /* Center the video within the box */
+    align-items: center;
+}
+
+.content-boxt {
+    flex: 1; /* Take the remaining space */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px; /* Added gap to space out the child elements */
+    margin-top: 30px;
+    margin-left: 80px;
+}
+
+
+
+

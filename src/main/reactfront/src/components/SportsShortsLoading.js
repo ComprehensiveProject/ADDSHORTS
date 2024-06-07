@@ -6,12 +6,11 @@ import axios from 'axios';
 import Navigation from "../views/Navigation";
 import {LinearProgress} from "@mui/joy";
 import loading2 from './loading/loading2.gif';
-import loading1 from './loading/loading1.gif';
 
-export default function LoadingScreen() {
+export default function SportsShortsLoading() {
     const location = useLocation();
     const navigate = useNavigate();
-    const { fileData, userId, summaryTime } = location.state;
+    const { fileData, userId } = location.state;
     const [progress, setProgress] = useState(0);
 
     useEffect(() => {
@@ -44,49 +43,34 @@ export default function LoadingScreen() {
                         // Summarize video using Flask server
                         const flaskFormData = new FormData();
                         flaskFormData.append('file', fileData);
-                        flaskFormData.append('summaryTime', summaryTime);
+                        flaskFormData.append('topN', 3); // Top 3 클립을 요청
 
-                        console.log('Sending request to Flask server...');
-
-                        const summaryResponse = await axios.post('http://localhost:5000/summarize', flaskFormData, {
+                        const summaryResponse = await axios.post('http://localhost:5000/extract_top_clips', flaskFormData, {
                             headers: {
                                 'Content-Type': 'multipart/form-data'
                             }
                         });
 
                         if (summaryResponse.status === 200) {
-                            const summaryVideoUrl = summaryResponse.data.result_path;
+                            const resultPaths = summaryResponse.data.result_paths;
 
-                            // Save summary video
-                            const summaryForm = new FormData();
-                            summaryForm.append('summaryVideoUrl', summaryVideoUrl);
-                            summaryForm.append('oriNo', oriNo);
-                            summaryForm.append('userId', userId);
-
-                            const saveSummaryResponse = await axios.post('/api/videos/uploadSummary', summaryForm);
-
-                            if (saveSummaryResponse.data.result) {
-                                navigate('/preview', { state: { videoUrl: summaryVideoUrl } });
-                            } else {
-                                alert('Failed to save summary video.');
-                                navigate('/summary');
-                            }
+                            navigate('/sportsShortsPreview', { state: { videoUrls: resultPaths } });
                         } else {
                             alert('Failed to summarize video.');
-                            navigate('/summary');
+                            navigate('/shorts');
                         }
                     } else {
                         alert('Failed to get latest original video.');
-                        navigate('/summary');
+                        navigate('/shorts');
                     }
                 } else {
                     alert('Failed to upload original video.');
-                    navigate('/summary');
+                    navigate('/shorts');
                 }
             } catch (error) {
                 console.error('Upload and summarize error:', error);
                 alert('Failed to upload and summarize video.');
-                navigate('/summary');
+                navigate('/shorts');
             }
         };
 
@@ -106,7 +90,7 @@ export default function LoadingScreen() {
         // }, 1000);
         //
         // return () => clearInterval(interval);
-    }, [fileData, navigate, summaryTime, userId]);
+    }, [fileData, navigate, userId]);
 
     return (
         <div>

@@ -1,0 +1,29 @@
+.snbb {
+    width: 100%; /* Full width to fill the container */
+    height: auto; /* Maintain the aspect ratio */
+    max-width: 800px; /* Set a maximum width to prevent it from getting too large */
+    border: 2px solid white; /* Reduced border thickness */
+    border-radius: 12px; /* Reduced border-radius */
+}
+
+.cas {
+    margin-top: 250px; /* Reduced margin */
+    display: flex;
+    flex-direction: row; /* Changed to row to align items horizontally */
+    align-items: flex-start;
+    justify-content: flex-start;
+    text-align: left;
+}
+
+.vvdd {
+    flex: 0 0 70%; /* Ensure the video box takes up 60% of the container width */
+    margin-right: 20px; /* Increased margin to push video further left */
+    display: flex;
+    justify-content: center; /* Center the video within the box */
+    align-items: center;
+}
+
+
+
+
+
