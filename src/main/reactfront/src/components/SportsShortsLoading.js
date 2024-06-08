@@ -98,8 +98,11 @@ export default function SportsShortsLoading() {
             <Container maxWidth="sm">
                 <Box display="flex" flexDirection="column" alignItems="center" mt={5}>
                     <CircularProgress />
+                    <div style={{marginTop: '150px'}}/>
                     <img src={loading2} alt="Loading..." />
-                    {/*<LinearProgress variant="determinate" value={progress} style={{ width: '100%' }} />*/}
+                    <Typography variant="h6" style={{ marginTop: '40px', fontWeight :'bold' ,  }}>
+                        영상 맛있게 제작해드릴게요! 담배 하나 피고 오시죠.
+                    </Typography>
                 </Box>
             </Container>
         </div>
