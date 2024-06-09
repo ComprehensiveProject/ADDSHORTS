@@ -45,7 +45,7 @@ export default function SportsShortsLoading() {
                         flaskFormData.append('file', fileData);
                         flaskFormData.append('topN', 3); // Top 3 클립을 요청
 
-                        const summaryResponse = await axios.post('http://localhost:5000/extract_top_clips', flaskFormData, {
+                        const summaryResponse = await axios.post('http://localhost:5000/sports_top_clips', flaskFormData, {
                             headers: {
                                 'Content-Type': 'multipart/form-data'
                             }
@@ -74,22 +74,22 @@ export default function SportsShortsLoading() {
             }
         };
 
-        // const checkProgress = async () => {
-        //     try {
-        //         const progressResponse = await axios.get('http://localhost:5000/progress');
-        //         setProgress(progressResponse.data.progress);
-        //     } catch (error) {
-        //         console.error('Error fetching progress:', error);
-        //     }
-        // };
+        const checkProgress = async () => {
+            try {
+                const progressResponse = await axios.get('http://localhost:5000/progress');
+                setProgress(progressResponse.data.progress);
+            } catch (error) {
+                console.error('Error fetching progress:', error);
+            }
+        };
 
         uploadAndSummarizeVideo();
 
-        // const interval = setInterval(() => {
-        //     checkProgress();
-        // }, 1000);
-        //
-        // return () => clearInterval(interval);
+        const interval = setInterval(() => {
+            checkProgress();
+        }, 1000);
+
+        return () => clearInterval(interval);
     }, [fileData, navigate, userId]);
 
     return (
@@ -98,8 +98,18 @@ export default function SportsShortsLoading() {
             <Container maxWidth="sm">
                 <Box display="flex" flexDirection="column" alignItems="center" mt={5}>
                     <CircularProgress />
+                    <div style={{marginTop: '150px'}}/>
                     <img src={loading2} alt="Loading..." />
-                    {/*<LinearProgress variant="determinate" value={progress} style={{ width: '100%' }} />*/}
+                    <Typography variant="h6" style={{ marginTop: '40px', fontWeight :'bold' ,  }}>
+                        쇼츠 영상을 제작하고 있습니다.
+                    </Typography>
+                    <Typography variant="h6" style={{ marginTop: '20px', fontWeight :'bold' ,  }}>
+                        인터넷 상황에 따라 시간이 지연될 수 있습니다.
+                    </Typography>
+                    <LinearProgress variant="determinate" value={progress} style={{ width: '100%', marginTop: '20px' }} />
+                    <Typography variant="h6" style={{ marginTop: '20px', fontWeight: 'bold' }}>
+                        진행률: {progress}%
+                    </Typography>
                 </Box>
             </Container>
         </div>

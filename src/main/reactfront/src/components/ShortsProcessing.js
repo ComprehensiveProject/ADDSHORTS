@@ -1,14 +1,17 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import { Container } from '@mui/system';
 import axios from 'axios';
 import Navigation from "../views/Navigation";
+import loading2 from "./loading/loading2.gif";
+import {LinearProgress} from "@mui/joy";
 
 export default function ShortsProcessingScreen() {
     const location = useLocation();
     const navigate = useNavigate();
     const { selectedTopic, fileData, userId } = location.state;
+    const [progress, setProgress] = useState(0);
 
     useEffect(() => {
         const processVideo = async () => {
@@ -64,7 +67,22 @@ export default function ShortsProcessingScreen() {
             }
         };
 
+        const checkProgress = async () => {
+            try {
+                const progressResponse = await axios.get('http://localhost:5000/progress');
+                setProgress(progressResponse.data.progress);
+            } catch (error) {
+                console.error('Error fetching progress:', error);
+            }
+        };
+
         processVideo();
+
+        const interval = setInterval(() => {
+            checkProgress();
+        }, 1000);
+
+        return () => clearInterval(interval);
     }, [fileData, navigate, selectedTopic]);
 
     return (
@@ -73,7 +91,18 @@ export default function ShortsProcessingScreen() {
             <Container maxWidth="sm">
                 <Box display="flex" flexDirection="column" alignItems="center" mt={5}>
                     <CircularProgress />
-                    <Typography variant="h6" mt={2}>쇼츠 제작하는 중...</Typography>
+                    <div style={{marginTop: '150px'}}/>
+                    <img src={loading2} alt="Loading..." />
+                    <Typography variant="h6" style={{ marginTop: '40px', fontWeight :'bold' ,  }}>
+                        주제에 맞는 쇼츠 영상을 제작하고 있습니다.
+                    </Typography>
+                    <Typography variant="h6" style={{ marginTop: '20px', fontWeight :'bold' ,  }}>
+                        인터넷 상황에 따라 영상 제작 시간이 지연될 수 있습니다.
+                    </Typography>
+                    <LinearProgress variant="determinate" value={progress} style={{ width: '100%', marginTop: '20px' }} />
+                    <Typography variant="h6" style={{ marginTop: '20px', fontWeight: 'bold' }}>
+                        진행률: {progress}%
+                    </Typography>
                 </Box>
             </Container>
         </div>
