@@ -89,22 +89,22 @@ export default function LoadingScreen() {
             }
         };
 
-        // const checkProgress = async () => {
-        //     try {
-        //         const progressResponse = await axios.get('http://localhost:5000/progress');
-        //         setProgress(progressResponse.data.progress);
-        //     } catch (error) {
-        //         console.error('Error fetching progress:', error);
-        //     }
-        // };
+        const checkProgress = async () => {
+            try {
+                const progressResponse = await axios.get('http://localhost:5000/progress');
+                setProgress(progressResponse.data.progress);
+            } catch (error) {
+                console.error('Error fetching progress:', error);
+            }
+        };
 
         uploadAndSummarizeVideo();
 
-        // const interval = setInterval(() => {
-        //     checkProgress();
-        // }, 1000);
-        //
-        // return () => clearInterval(interval);
+        const interval = setInterval(() => {
+            checkProgress();
+        }, 1000);
+
+        return () => clearInterval(interval);
     }, [fileData, navigate, summaryTime, userId]);
 
     return (
@@ -121,7 +121,10 @@ export default function LoadingScreen() {
                     <Typography variant="h6" style={{ marginTop: '20px', fontWeight :'bold' ,  }}>
                         인터넷 상황에 따라 영상 제작 시간이 지연될 수 있습니다.
                     </Typography>
-                    {/*<LinearProgress variant="determinate" value={progress} style={{ width: '100%' }} />*/}
+                    <LinearProgress variant="determinate" value={progress} style={{ width: '100%', marginTop: '20px' }} />
+                    <Typography variant="h6" style={{ marginTop: '20px', fontWeight: 'bold' }}>
+                        진행률: {progress}%
+                    </Typography>
                 </Box>
             </Container>
         </div>
