@@ -58,21 +58,21 @@ export default function VideoShort() {
             return;
         }
 
-        if (category === 'news') {
-            navigate('/shortsLoading', {
-                state: {
-                    fileData: videoFile,
-                    userId
-                }
-            });
-        } else if(category === 'sports'){
+        if(category === 'sports'){
             navigate('/sportsShortsLoading', {
                 state: {
                     fileData: videoFile,
                     userId
                 }
             });
-        }else {
+        } else if(category === 'general'){
+            navigate('/shortsLoading', {
+                state: {
+                    fileData: videoFile,
+                    userId
+                }
+            });
+        } else {
             alert('This feature is currently available for news category only.');
         }
     };
@@ -170,9 +170,7 @@ export default function VideoShort() {
                                             }
                                         }}
                                     >
-                                        <MenuItem value="news" sx={{ color: '#D32F2F' }}>뉴스</MenuItem>
                                         <MenuItem value="sports" sx={{ color: '#D32F2F' }}>스포츠</MenuItem>
-                                        <MenuItem value="drama_movie" sx={{ color: '#D32F2F' }}>드라마,영화</MenuItem>
                                         <MenuItem value="general" sx={{ color: '#D32F2F' }}>일반 영상</MenuItem>
                                     </Select>
                                 </FormControl>

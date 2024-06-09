@@ -45,7 +45,7 @@ export default function SportsShortsLoading() {
                         flaskFormData.append('file', fileData);
                         flaskFormData.append('topN', 3); // Top 3 클립을 요청
 
-                        const summaryResponse = await axios.post('http://localhost:5000/extract_top_clips', flaskFormData, {
+                        const summaryResponse = await axios.post('http://localhost:5000/sports_top_clips', flaskFormData, {
                             headers: {
                                 'Content-Type': 'multipart/form-data'
                             }
@@ -101,7 +101,10 @@ export default function SportsShortsLoading() {
                     <div style={{marginTop: '150px'}}/>
                     <img src={loading2} alt="Loading..." />
                     <Typography variant="h6" style={{ marginTop: '40px', fontWeight :'bold' ,  }}>
-                        영상 맛있게 제작해드릴게요! 담배 하나 피고 오시죠.
+                        쇼츠 영상을 제작하고 있습니다.
+                    </Typography>
+                    <Typography variant="h6" style={{ marginTop: '20px', fontWeight :'bold' ,  }}>
+                        인터넷 상황에 따라 시간이 지연될 수 있습니다.
                     </Typography>
                 </Box>
             </Container>

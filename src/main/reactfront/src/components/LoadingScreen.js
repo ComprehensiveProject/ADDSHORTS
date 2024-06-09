@@ -113,7 +113,14 @@ export default function LoadingScreen() {
             <Container maxWidth="sm">
                 <Box display="flex" flexDirection="column" alignItems="center" mt={5}>
                     <CircularProgress />
+                    <div style={{marginTop: '150px'}}/>
                     <img src={loading2} alt="Loading..." />
+                    <Typography variant="h6" style={{ marginTop: '40px', fontWeight :'bold' ,  }}>
+                        요약 영상을 제작하고 있습니다.
+                    </Typography>
+                    <Typography variant="h6" style={{ marginTop: '20px', fontWeight :'bold' ,  }}>
+                        인터넷 상황에 따라 영상 제작 시간이 지연될 수 있습니다.
+                    </Typography>
                     {/*<LinearProgress variant="determinate" value={progress} style={{ width: '100%' }} />*/}
                 </Box>
             </Container>

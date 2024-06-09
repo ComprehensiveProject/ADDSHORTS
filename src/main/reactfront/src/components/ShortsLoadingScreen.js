@@ -63,7 +63,10 @@ export default function ShortsLoadingScreen() {
                     <div style={{marginTop: '150px'}}/>
                     <img src={loading2} alt="Loading..." />
                     <Typography variant="h6" style={{ marginTop: '40px', fontWeight :'bold' ,  }}>
-                        쇼츠 맛있게 제작해드릴게요! 담배 하나 피고 오시죠.
+                        쇼츠 주제를 추출하는 중입니다.
+                    </Typography>
+                    <Typography variant="h6" style={{ marginTop: '20px', fontWeight :'bold' ,  }}>
+                        인터넷 상황에 따라 영상 제작 시간이 지연될 수 있습니다.
                     </Typography>
                 </Box>
             </Container>

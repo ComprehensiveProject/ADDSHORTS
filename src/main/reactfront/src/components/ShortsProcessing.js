@@ -4,6 +4,7 @@ import { Box, CircularProgress, Typography } from '@mui/material';
 import { Container } from '@mui/system';
 import axios from 'axios';
 import Navigation from "../views/Navigation";
+import loading2 from "./loading/loading2.gif";
 
 export default function ShortsProcessingScreen() {
     const location = useLocation();
@@ -73,7 +74,14 @@ export default function ShortsProcessingScreen() {
             <Container maxWidth="sm">
                 <Box display="flex" flexDirection="column" alignItems="center" mt={5}>
                     <CircularProgress />
-                    <Typography variant="h6" mt={2}>쇼츠 제작하는 중...</Typography>
+                    <div style={{marginTop: '150px'}}/>
+                    <img src={loading2} alt="Loading..." />
+                    <Typography variant="h6" style={{ marginTop: '40px', fontWeight :'bold' ,  }}>
+                        주제에 맞는 쇼츠 영상을 제작하고 있습니다.
+                    </Typography>
+                    <Typography variant="h6" style={{ marginTop: '20px', fontWeight :'bold' ,  }}>
+                        인터넷 상황에 따라 영상 제작 시간이 지연될 수 있습니다.
+                    </Typography>
                 </Box>
             </Container>
         </div>
