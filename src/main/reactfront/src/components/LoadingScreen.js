@@ -6,7 +6,6 @@ import axios from 'axios';
 import Navigation from "../views/Navigation";
 import {LinearProgress} from "@mui/joy";
 import loading2 from './loading/loading2.gif';
-import loading1 from './loading/loading1.gif';
 
 export default function LoadingScreen() {
     const location = useLocation();
@@ -90,22 +89,22 @@ export default function LoadingScreen() {
             }
         };
 
-        // const checkProgress = async () => {
-        //     try {
-        //         const progressResponse = await axios.get('http://localhost:5000/progress');
-        //         setProgress(progressResponse.data.progress);
-        //     } catch (error) {
-        //         console.error('Error fetching progress:', error);
-        //     }
-        // };
+        const checkProgress = async () => {
+            try {
+                const progressResponse = await axios.get('http://localhost:5000/progress');
+                setProgress(progressResponse.data.progress);
+            } catch (error) {
+                console.error('Error fetching progress:', error);
+            }
+        };
 
         uploadAndSummarizeVideo();
 
-        // const interval = setInterval(() => {
-        //     checkProgress();
-        // }, 1000);
-        //
-        // return () => clearInterval(interval);
+        const interval = setInterval(() => {
+            checkProgress();
+        }, 1000);
+
+        return () => clearInterval(interval);
     }, [fileData, navigate, summaryTime, userId]);
 
     return (
@@ -117,7 +116,14 @@ export default function LoadingScreen() {
                     <div style={{marginTop: '150px'}}/>
                     <img src={loading2} alt="Loading..." />
                     <Typography variant="h6" style={{ marginTop: '40px', fontWeight :'bold' ,  }}>
-                        영상 맛있게 제작해드릴게요! 담배 하나 피고 오시죠.
+                        요약 영상을 제작하고 있습니다.
+                    </Typography>
+                    <Typography variant="h6" style={{ marginTop: '20px', fontWeight :'bold' ,  }}>
+                        인터넷 상황에 따라 영상 제작 시간이 지연될 수 있습니다.
+                    </Typography>
+                    <LinearProgress variant="determinate" value={progress} style={{ width: '100%', marginTop: '20px' }} />
+                    <Typography variant="h6" style={{ marginTop: '20px', fontWeight: 'bold' }}>
+                        진행률: {progress}%
                     </Typography>
                 </Box>
             </Container>

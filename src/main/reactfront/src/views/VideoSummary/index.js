@@ -169,10 +169,10 @@ export default function VideoSummary() {
                                     <Divider />
                                     <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column">
                                         <Typography variant="body1" className="info-note">
-                                            <AccessTimeIcon style={{ verticalAlign: 'middle', marginRight: 4 }} /> 비디오 길이에 따라 요약 시간이 달라질 수 있습니다.
+                                            <AccessTimeIcon style={{ verticalAlign: 'middle', marginRight: 4 }} /> 비디오 길이에 따라 영상 요약 시간이 달라질 수 있습니다.
                                         </Typography>
                                         <Typography variant="body1" className="info-note">
-                                            <HelpOutlineIcon style={{ verticalAlign: 'middle', marginRight: 4 }} /> 요약 시간은 10초 단위로 선택할 수 있습니다.
+                                            <HelpOutlineIcon style={{ verticalAlign: 'middle', marginRight: 4 }} /> 요약 영상의 길이는 10초 단위로 선택할 수 있습니다.
                                         </Typography>
                                         <Typography variant="body1" className="info-note">
                                             <UploadFileIcon style={{ verticalAlign: 'middle', marginRight: 4 }} /> 업로드 후 요약 과정은 자동으로 진행됩니다.
